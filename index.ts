@@ -3,6 +3,7 @@ import { PaymentFrequency } from './enums/PaymentFrequency';
 import { Payments } from './classes/Payments';
 import { Lease } from './classes/Lease';
 
+// test file
 const test = new Lease(
   'vehicles',
   'vehicles in Mexico',

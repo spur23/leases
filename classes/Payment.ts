@@ -1,6 +1,6 @@
 import { PaymentFrequency } from '../enums/PaymentFrequency';
 import { PaymentValues } from '../interfaces/PaymentValues';
-
+// payment class
 export class Payment {
   private payment: number;
   private frequency: PaymentFrequency;

@@ -1,5 +1,5 @@
 import { Payments } from './Payments';
-
+// parent class
 export class Lease {
   private name: string;
   private description: string;

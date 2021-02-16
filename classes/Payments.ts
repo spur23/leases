@@ -1,5 +1,5 @@
 import { Payment } from './Payment';
-
+// paymets class
 export class Payments {
   payments: Payment[];
   constructor(payments: Payment[]) {
