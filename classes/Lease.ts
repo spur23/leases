@@ -1,29 +1,61 @@
+import { LeaseClassification, Prepaid } from '../enums';
+import { AssetFinance } from './Asset/AssetFinance';
 import { Payments } from './Payments';
+
 // parent class
 export class Lease {
-  private name: string;
-  private description: string;
   private totalPayments: number;
+  private quantityOfPayments: number;
   private presentValue: number;
-  private interestRate: number;
-  private payments: Payments;
+  private startDate: string;
+  private endDate: string;
+  private liability: [];
+  private asset: any;
 
   constructor(
-    name: string,
-    description: string,
-    payments: Payments,
-    interestRate: number
+    private name: string,
+    private description: string,
+    private classification: LeaseClassification,
+    private interestRate: number,
+    private payments: Payments,
+    private prepaid: boolean
   ) {
     this.name = name;
     this.description = description;
+    this.classification = classification;
     this.payments = payments;
+    this.totalPayments = this.getSumOfPayments();
     this.interestRate = interestRate / 100;
+    this.prepaid = prepaid;
+    this.quantityOfPayments = this.getQuantityOfPayments();
 
-    this.totalPayments = this.getQuantityOfPayments();
+    this.presentValue = this.calculatePresentValue();
 
-    this.presentValue =
-      (this.payments.sumAllPayments() / (1 + this.interestRate)) ^
-      this.getQuantityOfPayments();
+    // create and sor thte payments array to get the start and end dates of the lease
+    const paymentsArray = this.payments
+      .paymentInformation()
+      .sort(
+        (a, b) =>
+          new Date(a.startDate).valueOf() - new Date(b.startDate).valueOf()
+      );
+
+    this.startDate = paymentsArray[0].startDate;
+    this.endDate = paymentsArray[paymentsArray.length - 1].endDate;
+
+    // create and calculate a new asset
+    if (this.classification === LeaseClassification.FINANCE) {
+      this.asset = new AssetFinance(
+        this.startDate,
+        this.presentValue,
+        this.quantityOfPayments
+      );
+    } else if (this.classification === LeaseClassification.OPERATING) {
+      console.log('Operating Lease');
+    } else {
+      throw new Error(
+        'Lease must be classified as either an operating or finance'
+      );
+    }
   }
 
   getPayments() {
@@ -31,24 +63,19 @@ export class Lease {
   }
 
   getLeaseInformation() {
-    const startDate = this.payments
-      .paymentInformation()
-      .sort(
-        (a, b) =>
-          new Date(a.startDate).valueOf() - new Date(b.startDate).valueOf()
-      );
-
-    const endDate = startDate[startDate.length - 1].endDate;
-
     return {
       lease: this.name,
+      prepaid: this.prepaid,
       description: this.description,
+      classification: this.classification,
       interestRate: this.interestRate,
       totalPayments: this.totalPayments,
+      quantityOfPayments: this.quantityOfPayments,
       presentValue: this.presentValue,
-      startDate: startDate[0].startDate,
-      endDate: endDate,
-      payments: this.getPayments()
+      startDate: this.startDate,
+      endDate: this.endDate,
+      payments: this.getPayments(),
+      asset: this.getAssetSchedule()
     };
   }
 
@@ -58,5 +85,16 @@ export class Lease {
 
   getQuantityOfPayments() {
     return this.payments.quantityOfPayments();
+  }
+
+  getAssetSchedule() {
+    return this.asset.getAssetData();
+  }
+
+  private calculatePresentValue(): number {
+    return (
+      (this.payments.sumAllPayments() / (1 + this.interestRate)) ^
+      this.getQuantityOfPayments()
+    );
   }
 }
