@@ -1,3 +1,5 @@
+import { roundNumber } from '../../utils';
+
 export class LiabilityMonthly {
   private interestExpense: number;
   private principal: number;
@@ -15,10 +17,13 @@ export class LiabilityMonthly {
     this.date = date;
     this.beginningBalance = beginningBalance;
     this.interestRate = interestRate / 12;
-    this.interestExpense = this.beginningBalance * this.interestRate;
+    this.interestExpense = roundNumber(
+      this.beginningBalance * this.interestRate,
+      2
+    );
 
     this.principal = payment - this.interestExpense;
-    this.endingBalance = this.beginningBalance - this.principal;
+    this.endingBalance = roundNumber(this.beginningBalance - this.principal, 2);
   }
 
   getMonthlyData() {
