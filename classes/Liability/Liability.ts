@@ -33,16 +33,19 @@ export class Liability {
         result.push(month);
       } else {
         const nextMonth = addMonth(this.startDate, i);
+        const { endingBalance } = result[i - 1].getMonthlyData();
 
         const month = new LiabilityMonthly(
           nextMonth,
           this.payment,
-          this.startingBalance,
+          endingBalance,
           this.interestRate
         );
-      }
 
-      return result;
+        result.push(month);
+      }
     }
+
+    return result;
   }
 }
