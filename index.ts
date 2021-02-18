@@ -4,6 +4,7 @@ import { Payments } from './classes/Payments';
 import { Lease } from './classes/Lease';
 import { LeaseClassification } from './enums/LeaseClassification';
 import { AssetFinance } from './classes/Asset/AssetFinance';
+import { Liability } from './classes/Liability/Liability';
 
 // test file
 
@@ -39,7 +40,9 @@ try {
 
   // const test = new AssetFinance('1/1/2020', 1000, 12);
   // test.getLeaseInformation();
-  console.log(test.getLeaseInformation());
+  // console.log(test.getLeaseInformation());
+  const liability = new Liability('1/1/2020', 200, 0.046, 2400, 12);
+  console.log(liability);
 } catch (err) {
   console.log(err);
 }
