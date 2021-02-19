@@ -3,6 +3,7 @@ import { roundNumber } from '../../utils';
 interface LiabilityMonthlyValues {
   date: Date;
   beginningBalance: number;
+  payment: number;
   interestExpense: number;
   principal: number;
   endingBalance: number;
@@ -40,6 +41,7 @@ export class LiabilityMonthly {
     return {
       date: this.date,
       beginningBalance: this.beginningBalance,
+      payment: this.payment,
       interestExpense: this.interestExpense,
       principal: this.principal,
       endingBalance: this.endingBalance,

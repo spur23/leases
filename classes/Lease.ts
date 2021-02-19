@@ -1,11 +1,13 @@
 import { LeaseClassification, Prepaid } from '../enums';
+import { PaymentStream } from '../interfaces';
 import { AssetFinance } from './Asset/AssetFinance';
 import { Liability } from './Liability/Liability';
-import { Payments } from './Payments';
+import { Payments } from './Payments/Payments';
 
 // parent class
 export class Lease {
   private totalPayments: number;
+  private paymentStream: PaymentStream[];
   private quantityOfPayments: number;
   private presentValue: number;
   private startDate: string;
@@ -58,9 +60,12 @@ export class Lease {
       );
     }
 
+    this.paymentStream = this.getPaymentStream();
+
     this.liability = new Liability(
       this.startDate,
       this.getSumOfPayments(),
+      this.paymentStream,
       this.interestRate,
       this.presentValue,
       this.quantityOfPayments
@@ -95,6 +100,10 @@ export class Lease {
 
   getQuantityOfPayments() {
     return this.payments.quantityOfPayments();
+  }
+
+  getPaymentStream() {
+    return this.payments.paymentStream();
   }
 
   getAssetSchedule() {

@@ -1,4 +1,4 @@
-const calcPaymentMonths = (dateFrom: Date, dateTo: Date): number | never => {
+export default (dateFrom: Date, dateTo: Date): number | never => {
   const monthFrom = dateFrom.getMonth() + 1;
   const monthTo = dateTo.getMonth() + 1;
   const yearFrom = dateFrom.getFullYear();

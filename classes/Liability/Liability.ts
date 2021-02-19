@@ -1,4 +1,6 @@
-import { addMonth } from '../../utils';
+import { LiabilitySchedule } from '../../interfaces';
+import { PaymentStream } from '../../interfaces';
+import { roundNumber } from '../../utils';
 import { LiabilityMonthly } from './LiabilityMonthly';
 
 export class Liability {
@@ -8,12 +10,14 @@ export class Liability {
   constructor(
     startDate: string,
     private payment: number,
+    private paymentStream: PaymentStream[],
     private interestRate: number,
     private startingBalance: number,
     private life: number
   ) {
     this.startingBalance = startingBalance;
     this.startDate = new Date(startDate);
+    this.paymentStream = paymentStream;
     this.payment = payment;
     this.interestRate = interestRate;
     this.life = life;
@@ -22,22 +26,26 @@ export class Liability {
 
   calculateMonthlySchedule(): LiabilityMonthly[] {
     let result = [];
-    for (let i = 0; i < this.life; i++) {
+
+    for (let i = 0; i < this.paymentStream.length; i++) {
+      const date = new Date(this.paymentStream[i].month);
+      const payment = this.paymentStream[i].payment;
+
       if (i === 0) {
         const month = new LiabilityMonthly(
-          this.startDate,
-          this.payment,
+          date,
+          payment,
           this.startingBalance,
           this.interestRate
         );
+
         result.push(month);
       } else {
-        const nextMonth = addMonth(this.startDate, i);
         const { endingBalance } = result[i - 1].getMonthlyData();
 
         const month = new LiabilityMonthly(
-          nextMonth,
-          this.payment,
+          date,
+          payment,
           endingBalance,
           this.interestRate
         );
@@ -59,22 +67,26 @@ export class Liability {
           stBalance += result[y + i].principal;
         }
         ltBalance = result[i].endingBalance - stBalance;
-        result[i].shortTermBalance = stBalance;
-        result[i].longTermBalance = ltBalance;
+        result[i].shortTermBalance = roundNumber(stBalance, 2);
+        result[i].longTermBalance = roundNumber(ltBalance, 2);
       } else {
-        result[i].shortTermBalance = result[i].endingBalance;
+        result[i].shortTermBalance = roundNumber(result[i].endingBalance, 2);
         result[i].longTermBalance = 0;
       }
+
+      stBalance = 0;
+      ltBalance = 0;
     }
 
     return result;
   }
 
-  getLiabilityData() {
+  getLiabilityData(): LiabilitySchedule[] {
     const schedule = this.monthlyTransactions.map((month) => {
       const {
         date,
         beginningBalance,
+        payment,
         interestExpense,
         principal,
         endingBalance,
@@ -85,6 +97,7 @@ export class Liability {
       return {
         date,
         beginningBalance,
+        payment,
         interestExpense,
         principal,
         endingBalance,

@@ -1,5 +1,6 @@
 import { AssetMonthly } from './AssetMonthly';
 import { roundNumber, addMonth } from '../../utils/index';
+import { AssetSchedule } from '../../interfaces';
 
 // class to house the finance lease asset schedule
 export class AssetFinance {
@@ -50,10 +51,7 @@ export class AssetFinance {
     return result;
   }
 
-  getAssetData(): {
-    monthlyDepreciation: number;
-    schedule: any[];
-  } {
+  getAssetData(): AssetSchedule[] {
     const schedule = this.monthlyTransactions.map((month) => {
       const {
         date,
@@ -82,9 +80,6 @@ export class AssetFinance {
       }
     });
 
-    return {
-      monthlyDepreciation: this.monthlyDepreciation,
-      schedule
-    };
+    return schedule;
   }
 }

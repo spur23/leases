@@ -1,12 +1,8 @@
-import { Payment } from './classes/Payment';
+import { Payment } from './classes/Payments/Payment';
 import { PaymentFrequency, Prepaid } from './enums';
-import { Payments } from './classes/Payments';
+import { Payments } from './classes/Payments/Payments';
 import { Lease } from './classes/Lease';
 import { LeaseClassification } from './enums/LeaseClassification';
-import { AssetFinance } from './classes/Asset/AssetFinance';
-import { Liability } from './classes/Liability/Liability';
-
-// test file
 
 try {
   const discountRate = 4.6;
@@ -23,7 +19,7 @@ try {
       payment: 300,
       frequency: PaymentFrequency.Monthly,
       startDate: '1/1/2021',
-      endDate: '6/30/2025'
+      endDate: '12/31/2021'
     })
   ];
 
