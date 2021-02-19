@@ -22,4 +22,8 @@ export class Payments {
   quantityOfPayments() {
     return this.payments.reduce((a, b) => a + b.getPayments(), 0);
   }
+
+  paymentStream() {
+    for (let i = 0; i < this.payments.length; i++) {}
+  }
 }

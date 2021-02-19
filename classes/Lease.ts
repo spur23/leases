@@ -1,5 +1,6 @@
 import { LeaseClassification, Prepaid } from '../enums';
 import { AssetFinance } from './Asset/AssetFinance';
+import { Liability } from './Liability/Liability';
 import { Payments } from './Payments';
 
 // parent class
@@ -9,7 +10,7 @@ export class Lease {
   private presentValue: number;
   private startDate: string;
   private endDate: string;
-  private liability: [];
+  private liability: any;
   private asset: any;
 
   constructor(
@@ -56,6 +57,14 @@ export class Lease {
         'Lease must be classified as either an operating or finance'
       );
     }
+
+    this.liability = new Liability(
+      this.startDate,
+      this.getSumOfPayments(),
+      this.interestRate,
+      this.presentValue,
+      this.quantityOfPayments
+    );
   }
 
   getPayments() {
@@ -75,7 +84,8 @@ export class Lease {
       startDate: this.startDate,
       endDate: this.endDate,
       payments: this.getPayments(),
-      asset: this.getAssetSchedule()
+      asset: this.getAssetSchedule(),
+      liability: this.getLiabilitySchedule()
     };
   }
 
@@ -89,6 +99,10 @@ export class Lease {
 
   getAssetSchedule() {
     return this.asset.getAssetData();
+  }
+
+  getLiabilitySchedule() {
+    return this.liability.getLiabilityData();
   }
 
   private calculatePresentValue(): number {

@@ -40,9 +40,9 @@ try {
 
   // const test = new AssetFinance('1/1/2020', 1000, 12);
   // test.getLeaseInformation();
-  // console.log(test.getLeaseInformation());
-  const liability = new Liability('1/1/2020', 200, 0.046, 2400, 12);
-  console.log(liability);
+  console.log(test.getLeaseInformation());
+  // const liability = new Liability('1/1/2020', 100, 0.046, 2400, 24);
+  // console.log(liability);
 } catch (err) {
   console.log(err);
 }

@@ -46,6 +46,53 @@ export class Liability {
       }
     }
 
+    result.sort(
+      (a, b) => new Date(a.date).valueOf() - new Date(b.date).valueOf()
+    );
+
+    let stBalance = 0;
+    let ltBalance = 0;
+
+    for (let i = 0; i < result.length; i++) {
+      if (i < result.length - 12) {
+        for (let y = 0; y < 12; y++) {
+          stBalance += result[y + i].principal;
+        }
+        ltBalance = result[i].endingBalance - stBalance;
+        result[i].shortTermBalance = stBalance;
+        result[i].longTermBalance = ltBalance;
+      } else {
+        result[i].shortTermBalance = result[i].endingBalance;
+        result[i].longTermBalance = 0;
+      }
+    }
+
     return result;
+  }
+
+  getLiabilityData() {
+    const schedule = this.monthlyTransactions.map((month) => {
+      const {
+        date,
+        beginningBalance,
+        interestExpense,
+        principal,
+        endingBalance,
+        shortTermBalance,
+        longTermBalance
+      } = month.getMonthlyData();
+
+      return {
+        date,
+        beginningBalance,
+        interestExpense,
+        principal,
+        endingBalance,
+        shortTermBalance,
+        longTermBalance
+      };
+    });
+
+    return schedule;
   }
 }

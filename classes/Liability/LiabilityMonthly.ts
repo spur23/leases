@@ -1,11 +1,21 @@
 import { roundNumber } from '../../utils';
 
+interface LiabilityMonthlyValues {
+  date: Date;
+  beginningBalance: number;
+  interestExpense: number;
+  principal: number;
+  endingBalance: number;
+  shortTermBalance: number;
+  longTermBalance: number;
+}
+
 export class LiabilityMonthly {
   private interestExpense: number;
   private principal: number;
   private endingBalance: number;
-  private shortTermBalance: number;
-  private longTermBalance: number;
+  shortTermBalance: number;
+  longTermBalance: number;
 
   constructor(
     private date: Date,
@@ -26,13 +36,17 @@ export class LiabilityMonthly {
     this.endingBalance = roundNumber(this.beginningBalance - this.principal, 2);
   }
 
-  getMonthlyData() {
+  getMonthlyData(): LiabilityMonthlyValues {
     return {
       date: this.date,
       beginningBalance: this.beginningBalance,
       interestExpense: this.interestExpense,
       principal: this.principal,
-      endingBalance: this.endingBalance
+      endingBalance: this.endingBalance,
+      shortTermBalance: this.shortTermBalance,
+      longTermBalance: this.longTermBalance
     };
   }
+
+  addSTBalance() {}
 }

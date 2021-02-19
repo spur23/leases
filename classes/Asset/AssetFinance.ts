@@ -63,7 +63,7 @@ export class AssetFinance {
       } = month.getMonthlyData();
 
       // check if the ending balance is less than 1
-      // if so add it to the depreciation amount to accoutn for rounding
+      // if so add it to the depreciation amount to account for rounding
       // set ending balance to 0
       if (endingBalance < 1) {
         return {
