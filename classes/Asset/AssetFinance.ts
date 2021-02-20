@@ -1,47 +1,40 @@
 import { AssetMonthly } from './AssetMonthly';
 import { roundNumber, addMonth } from '../../utils/index';
 import { AssetSchedule } from '../../interfaces';
+import { AssetBase } from './AssetBase';
 
 // class to house the finance lease asset schedule
-export class AssetFinance {
-  private startDate: Date;
-  private monthlyDepreciation: number;
-  private monthlyTransactions: AssetMonthly[];
+export class AssetFinance extends AssetBase {
+  constructor(startDate: string, startingBalance: number, life: number) {
+    super(startDate, startingBalance, life);
+    this.setMonthlyDepreciation();
 
-  constructor(
-    startDate: string,
-    private startingBalance: number,
-    private life: number
-  ) {
-    this.startDate = new Date(startDate);
-    this.startingBalance = startingBalance;
-    this.life = life;
-
-    const depreciation = this.startingBalance / this.life;
-
-    this.monthlyDepreciation = roundNumber(depreciation, 2);
-
-    this.monthlyTransactions = this.calculateMonthlySchedule();
+    this.setMonthlyTransactions(this.calculateMonthlySchedule);
   }
 
-  calculateMonthlySchedule(): AssetMonthly[] {
+  calculateMonthlySchedule(
+    startDate: Date,
+    life: number,
+    startingBalance: number,
+    monthlyDepreciation: number
+  ): AssetMonthly[] {
     let result = [];
-    for (let i = 0; i < this.life; i++) {
+    for (let i = 0; i < life; i++) {
       if (i === 0) {
         const month = new AssetMonthly(
-          this.startDate,
-          this.startingBalance,
-          this.monthlyDepreciation
+          startDate,
+          startingBalance,
+          monthlyDepreciation
         );
 
         result.push(month);
       } else {
         const { endingBalance } = result[i - 1].getMonthlyData();
-        const nextMonth = addMonth(this.startDate, i);
+        const nextMonth = addMonth(startDate, i);
         const month = new AssetMonthly(
           nextMonth,
           endingBalance,
-          this.monthlyDepreciation
+          monthlyDepreciation
         );
 
         result.push(month);
@@ -52,7 +45,7 @@ export class AssetFinance {
   }
 
   getAssetData(): AssetSchedule[] {
-    const schedule = this.monthlyTransactions.map((month) => {
+    const schedule = this.getMonthlyTransactions().map((month) => {
       const {
         date,
         beginningBalance,
