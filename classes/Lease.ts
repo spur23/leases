@@ -44,8 +44,20 @@ export class Lease {
 
     this.startDate = paymentsArray[0].startDate;
     this.endDate = paymentsArray[paymentsArray.length - 1].endDate;
+    this.paymentStream = this.getPaymentStream();
 
-    // create and calculate a new asset
+    // Liability is calculated first because it is needed to calculate the
+    // operating lease asset schedule
+    this.liability = new Liability(
+      this.startDate,
+      this.getSumOfPayments(),
+      this.paymentStream,
+      this.interestRate,
+      this.presentValue,
+      this.quantityOfPayments
+    );
+
+    // create and calculate a new asset based off of classification
     if (this.classification === LeaseClassification.FINANCE) {
       this.asset = new AssetFinance(
         this.startDate,
@@ -59,17 +71,6 @@ export class Lease {
         'Lease must be classified as either an operating or finance'
       );
     }
-
-    this.paymentStream = this.getPaymentStream();
-
-    this.liability = new Liability(
-      this.startDate,
-      this.getSumOfPayments(),
-      this.paymentStream,
-      this.interestRate,
-      this.presentValue,
-      this.quantityOfPayments
-    );
   }
 
   getPayments() {
