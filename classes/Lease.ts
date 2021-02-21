@@ -1,5 +1,6 @@
 import { LeaseClassification, Prepaid } from '../enums';
 import { PaymentStream } from '../interfaces';
+import { roundNumber } from '../utils';
 import { AssetFinance } from './Asset/AssetFinance';
 import { Liability } from './Liability/Liability';
 import { Payments } from './Payments/Payments';
@@ -32,8 +33,6 @@ export class Lease {
     this.prepaid = prepaid;
     this.quantityOfPayments = this.getQuantityOfPayments();
 
-    this.presentValue = this.calculatePresentValue();
-
     // create and sor thte payments array to get the start and end dates of the lease
     const paymentsArray = this.payments
       .paymentInformation()
@@ -45,6 +44,8 @@ export class Lease {
     this.startDate = paymentsArray[0].startDate;
     this.endDate = paymentsArray[paymentsArray.length - 1].endDate;
     this.paymentStream = this.getPaymentStream();
+
+    this.presentValue = this.calculatePresentValue();
 
     // Liability is calculated first because it is needed to calculate the
     // operating lease asset schedule
@@ -116,9 +117,14 @@ export class Lease {
   }
 
   private calculatePresentValue(): number {
-    return (
-      (this.payments.sumAllPayments() / (1 + this.interestRate)) ^
-      this.getQuantityOfPayments()
+    const paymentStream = this.paymentStream.map((month) => month.payment);
+    const rateOfReturn = this.interestRate / 12;
+    const presentValue = paymentStream.reduce(
+      (accumulator, currentValue, index) =>
+        accumulator + currentValue / Math.pow(rateOfReturn + 1, index + 1),
+      0
     );
+
+    return roundNumber(presentValue, 2);
   }
 }
