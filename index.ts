@@ -14,18 +14,6 @@ try {
       frequency: PaymentFrequency.Monthly,
       startDate: '1/1/2020',
       endDate: '12/31/2020'
-    }),
-    new Payment({
-      payment: 300,
-      frequency: PaymentFrequency.Monthly,
-      startDate: '1/1/2021',
-      endDate: '12/31/2021'
-    }),
-    new Payment({
-      payment: 500,
-      frequency: PaymentFrequency.Monthly,
-      startDate: '1/1/2022',
-      endDate: '12/31/2024'
     })
   ];
 
@@ -37,7 +25,7 @@ try {
     LeaseClassification.FINANCE,
     discountRate,
     payments,
-    true
+    false
   );
 
   // const test = new AssetFinance('1/1/2020', 1000, 12);
