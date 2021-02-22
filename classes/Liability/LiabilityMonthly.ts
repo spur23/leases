@@ -1,15 +1,5 @@
+import { LiabilityMonthlyValues } from '../../interfaces';
 import { roundNumber } from '../../utils';
-
-interface LiabilityMonthlyValues {
-  date: Date;
-  beginningBalance: number;
-  payment: number;
-  interestExpense: number;
-  principal: number;
-  endingBalance: number;
-  shortTermBalance: number;
-  longTermBalance: number;
-}
 
 export class LiabilityMonthly {
   private interestExpense: number;
@@ -23,6 +13,7 @@ export class LiabilityMonthly {
     private payment: number,
     private beginningBalance: number,
     private interestRate: number,
+    private interestPayment: number,
     private prepaid?: boolean
   ) {
     this.date = date;
@@ -32,9 +23,23 @@ export class LiabilityMonthly {
       this.beginningBalance * this.interestRate,
       2
     );
-
-    this.principal = payment - this.interestExpense;
-    this.endingBalance = roundNumber(this.beginningBalance - this.principal, 2);
+    this.interestPayment = interestPayment;
+    if (this.prepaid) {
+      this.principal = payment - this.interestPayment;
+      this.endingBalance = roundNumber(
+        this.beginningBalance +
+          this.interestExpense -
+          this.principal -
+          this.interestPayment,
+        2
+      );
+    } else {
+      this.principal = payment - this.interestExpense;
+      this.endingBalance = roundNumber(
+        this.beginningBalance - this.principal,
+        2
+      );
+    }
   }
 
   getMonthlyData(): LiabilityMonthlyValues {
@@ -43,12 +48,11 @@ export class LiabilityMonthly {
       beginningBalance: this.beginningBalance,
       payment: this.payment,
       interestExpense: this.interestExpense,
+      interestPayment: this.interestPayment,
       principal: this.principal,
       endingBalance: this.endingBalance,
       shortTermBalance: this.shortTermBalance,
       longTermBalance: this.longTermBalance
     };
   }
-
-  addSTBalance() {}
 }

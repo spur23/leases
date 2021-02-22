@@ -13,7 +13,8 @@ export class Liability {
     private paymentStream: PaymentStream[],
     private interestRate: number,
     private startingBalance: number,
-    private life: number
+    private life: number,
+    private prepaid: boolean
   ) {
     this.startingBalance = startingBalance;
     this.startDate = new Date(startDate);
@@ -21,6 +22,8 @@ export class Liability {
     this.payment = payment;
     this.interestRate = interestRate;
     this.life = life;
+    this.prepaid = prepaid;
+
     this.monthlyTransactions = this.calculateMonthlySchedule();
   }
 
@@ -36,19 +39,37 @@ export class Liability {
           date,
           payment,
           this.startingBalance,
-          this.interestRate
+          this.interestRate,
+          0,
+          this.prepaid
         );
 
         result.push(month);
       } else {
-        const { endingBalance } = result[i - 1].getMonthlyData();
+        let month;
+        const { interestExpense, endingBalance } = result[
+          i - 1
+        ].getMonthlyData();
 
-        const month = new LiabilityMonthly(
-          date,
-          payment,
-          endingBalance,
-          this.interestRate
-        );
+        if (this.prepaid) {
+          month = new LiabilityMonthly(
+            date,
+            payment,
+            endingBalance,
+            this.interestRate,
+            interestExpense,
+            this.prepaid
+          );
+        } else {
+          month = new LiabilityMonthly(
+            date,
+            payment,
+            endingBalance,
+            this.interestRate,
+            0,
+            this.prepaid
+          );
+        }
 
         result.push(month);
       }
@@ -88,6 +109,7 @@ export class Liability {
         beginningBalance,
         payment,
         interestExpense,
+        interestPayment,
         principal,
         endingBalance,
         shortTermBalance,
@@ -99,6 +121,7 @@ export class Liability {
         beginningBalance,
         payment,
         interestExpense,
+        interestPayment,
         principal,
         endingBalance,
         shortTermBalance,

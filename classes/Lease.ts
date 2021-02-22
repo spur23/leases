@@ -1,4 +1,4 @@
-import { LeaseClassification, Prepaid } from '../enums';
+import { LeaseClassification } from '../enums';
 import { PaymentStream } from '../interfaces';
 import { roundNumber } from '../utils';
 import { AssetFinance } from './Asset/AssetFinance';
@@ -55,7 +55,8 @@ export class Lease {
       this.paymentStream,
       this.interestRate,
       this.presentValue,
-      this.quantityOfPayments
+      this.quantityOfPayments,
+      this.prepaid
     );
 
     // create and calculate a new asset based off of classification
