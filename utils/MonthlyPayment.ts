@@ -1,6 +1,8 @@
 import { PaymentFrequency } from '../enums';
 import { addMonth } from './addMonth';
-
+/**
+ *Calculates the next month and next payment depending on the payment frequency.
+ */
 export default (
   y: number,
   startDate: string,
