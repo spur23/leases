@@ -1,4 +1,4 @@
-import { AssetSchedule } from '../../interfaces';
+import { AssetSchedulePrint } from '../../interfaces';
 import { roundNumber } from '../../utils';
 import { AssetMonthly } from './AssetMonthly';
 
@@ -29,7 +29,7 @@ export class AssetBase {
     return this.monthlyTransactions;
   }
 
-  getAssetData(): AssetSchedule[] {
+  getAssetData(): AssetSchedulePrint[] {
     const schedule = this.monthlyTransactions.map((month) => {
       const {
         date,
@@ -43,14 +43,14 @@ export class AssetBase {
       // set ending balance to 0
       if (endingBalance < 1) {
         return {
-          date,
+          date: date.toLocaleDateString(),
           beginningBalance,
           depreciation: endingBalance + depreciation,
           endingBalance: endingBalance - endingBalance
         };
       } else {
         return {
-          date,
+          date: date.toLocaleDateString(),
           beginningBalance,
           depreciation,
           endingBalance

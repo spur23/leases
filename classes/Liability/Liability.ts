@@ -1,4 +1,4 @@
-import { LiabilitySchedule } from '../../interfaces';
+import { LiabilitySchedulePrint } from '../../interfaces';
 import { PaymentStream } from '../../interfaces';
 import { calculateLiability, roundNumber } from '../../utils';
 import { LiabilityMonthly } from './LiabilityMonthly';
@@ -38,7 +38,7 @@ export class Liability {
     return monthlySchedule;
   }
 
-  getLiabilityData(): LiabilitySchedule[] {
+  getLiabilityData(): LiabilitySchedulePrint[] {
     const schedule = this.monthlyTransactions.map((month) => {
       const {
         date,
@@ -53,7 +53,7 @@ export class Liability {
       } = month.getMonthlyData();
 
       return {
-        date,
+        date: date.toLocaleDateString(),
         beginningBalance,
         payment,
         interestExpense,

@@ -2,7 +2,9 @@ import { LeaseClassification } from '../enums';
 import { PaymentStream } from '../interfaces';
 import { roundNumber } from '../utils';
 import { AssetFinance } from './Asset/AssetFinance';
+import { AssetOperating } from './Asset/AssetOperating';
 import { Liability } from './Liability/Liability';
+import { LiabilityFromJSON } from './Liability/LiabilityFromJSON';
 import { Payments } from './Payments/Payments';
 
 // parent class
@@ -13,8 +15,6 @@ export class Lease {
   private presentValue: number;
   private startDate: string;
   private endDate: string;
-  private liability: any;
-  private asset: any;
 
   constructor(
     private name: string,
@@ -22,7 +22,10 @@ export class Lease {
     private classification: LeaseClassification,
     private interestRate: number,
     private payments: Payments,
-    private prepaid: boolean
+    private prepaid: boolean,
+    private fromJSON: boolean,
+    private liability?: any,
+    private asset?: any
   ) {
     this.name = name;
     this.description = description;
@@ -49,29 +52,38 @@ export class Lease {
 
     // Liability is calculated first because it is needed to calculate the
     // operating lease asset schedule
-    this.liability = new Liability(
-      this.startDate,
-      this.getSumOfPayments(),
-      this.paymentStream,
-      this.interestRate,
-      this.presentValue,
-      this.quantityOfPayments,
-      this.prepaid
-    );
-
-    // create and calculate a new asset based off of classification
-    if (this.classification === LeaseClassification.FINANCE) {
-      this.asset = new AssetFinance(
-        this.startDate,
-        this.presentValue,
-        this.quantityOfPayments
-      );
-    } else if (this.classification === LeaseClassification.OPERATING) {
-      console.log('Operating Lease');
+    if (fromJSON) {
+      // this.liability = new LiabilityFromJSON().fromJSON();
     } else {
-      throw new Error(
-        'Lease must be classified as either an operating or finance'
+      this.liability = new Liability(
+        this.startDate,
+        this.getSumOfPayments(),
+        this.paymentStream,
+        this.interestRate,
+        this.presentValue,
+        this.quantityOfPayments,
+        this.prepaid
       );
+
+      // create and calculate a new asset based off of classification
+      if (this.classification === LeaseClassification.FINANCE) {
+        this.asset = new AssetFinance(
+          this.startDate,
+          this.presentValue,
+          this.paymentStream.length
+        );
+      } else if (this.classification === LeaseClassification.OPERATING) {
+        this.asset = new AssetOperating(
+          this.startDate,
+          this.presentValue,
+          this.paymentStream.length,
+          this.getLiabilitySchedule()
+        );
+      } else {
+        throw new Error(
+          'Lease must be classified as either an operating or finance'
+        );
+      }
     }
   }
 
@@ -128,4 +140,8 @@ export class Lease {
 
     return roundNumber(presentValue, 2);
   }
+
+  // applyData(json) {
+  //   Object.assign(this, json);
+  // }
 }
