@@ -1,9 +1,8 @@
 import { AssetMonthly } from './AssetMonthly';
-import { roundNumber, addMonth } from '../../utils/index';
+import { addMonth } from '../../utils/index';
 import { AssetSchedule } from '../../interfaces';
 import { AssetBase } from './AssetBase';
 
-// class to house the finance lease asset schedule
 export class AssetFinance extends AssetBase {
   constructor(startDate: string, startingBalance: number, life: number) {
     super(startDate, startingBalance, life);
