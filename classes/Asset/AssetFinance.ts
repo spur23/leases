@@ -6,9 +6,15 @@ import { AssetBase } from './AssetBase';
 export class AssetFinance extends AssetBase {
   constructor(startDate: string, startingBalance: number, life: number) {
     super(startDate, startingBalance, life);
-    this.setMonthlyDepreciation();
+    this.calculateDepreciation();
 
     this.setMonthlyTransactions(this.calculateMonthlySchedule);
+  }
+
+  calculateDepreciation(): void {
+    const depreciation = this.getStartingBalance() / this.getLife();
+
+    this.setMonthlyDepreciation(depreciation);
   }
 
   calculateMonthlySchedule(
