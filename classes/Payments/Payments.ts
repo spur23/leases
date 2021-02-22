@@ -1,7 +1,7 @@
+import { PaymentFrequency } from '../../enums';
 import { PaymentStream } from '../../interfaces';
-import { addMonth } from '../../utils';
+import { addMonth, monthlyCalculation } from '../../utils';
 import { Payment } from './Payment';
-// paymets class
 
 export class Payments {
   payments: Payment[];
@@ -35,20 +35,18 @@ export class Payments {
 
       // loop through payments to create an array of payments with dates to pass to the liability
       for (let y = 0; y < streamLength; y++) {
-        const { payment } = this.payments[i].getPaymentInformation();
-        if (y === 0) {
-          arr.push({
-            month: new Date(startDate),
-            payment
-          });
-        } else {
-          const nextMonth = addMonth(new Date(startDate), y);
+        const { payment, frequency } = this.payments[i].getPaymentInformation();
+        const { nextMonth, monthlyPayment } = monthlyCalculation(
+          y,
+          startDate,
+          payment,
+          frequency
+        );
 
-          arr.push({
-            month: nextMonth,
-            payment
-          });
-        }
+        arr.push({
+          month: nextMonth,
+          payment: monthlyPayment
+        });
       }
     }
 

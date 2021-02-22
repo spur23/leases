@@ -21,14 +21,8 @@ export class Payment {
 
     if (months <= 0) {
       this.payments = 0;
-    } else if (this.frequency === PaymentFrequency.Monthly) {
+    } else {
       this.payments = months;
-    } else if (this.frequency === PaymentFrequency.Quarterly) {
-      this.payments = months / 4;
-    } else if (this.frequency === PaymentFrequency.SemiAnnual) {
-      this.payments = months / 6;
-    } else if (this.frequency === PaymentFrequency.Annual) {
-      this.payments = months / 12;
     }
   }
 
