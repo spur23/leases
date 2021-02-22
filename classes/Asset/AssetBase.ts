@@ -13,9 +13,10 @@ export class AssetBase {
     private life: number
   ) {
     this.startDate = new Date(startDate);
-    this.startingBalance = startingBalance;
+    this.startingBalance = roundNumber(startingBalance, 2);
     this.life = life;
   }
+
   getStartingBalance(): number {
     return this.startingBalance;
   }
@@ -60,8 +61,7 @@ export class AssetBase {
     return schedule;
   }
 
-  setMonthlyDepreciation(): void {
-    const depreciation = this.getStartingBalance() / this.getLife();
+  setMonthlyDepreciation(depreciation: number): void {
     this.monthlyDepreciation = roundNumber(depreciation, 2);
   }
 
