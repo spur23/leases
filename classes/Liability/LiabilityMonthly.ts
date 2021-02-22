@@ -23,9 +23,18 @@ export class LiabilityMonthly {
       this.beginningBalance * this.interestRate,
       2
     );
-    this.interestPayment = interestPayment;
+
     if (this.prepaid) {
-      this.principal = payment - this.interestPayment;
+      // check if the month has a cash payment if it does not set the payment to 0
+      // else calculate the princpal payment
+      if (payment === 0) {
+        this.principal = 0;
+        this.interestPayment = 0;
+      } else {
+        this.principal = payment - this.interestPayment;
+        this.interestPayment = interestPayment;
+      }
+
       this.endingBalance = roundNumber(
         this.beginningBalance +
           this.interestExpense -
