@@ -1,5 +1,5 @@
 import { Payment } from './classes/Payments/Payment';
-import { PaymentFrequency, Prepaid } from './enums';
+import { PaymentFrequency } from './enums';
 import { Payments } from './classes/Payments/Payments';
 import { Lease } from './classes/Lease';
 import { LeaseClassification } from './enums/LeaseClassification';
@@ -11,8 +11,8 @@ try {
   const paymentStream1 = [
     new Payment({
       payment: 100,
-      frequency: PaymentFrequency.Monthly,
-      startDate: '1/1/2020',
+      frequency: PaymentFrequency.Annual,
+      startDate: '5/1/2020',
       endDate: '12/31/2020'
     })
   ];
@@ -25,9 +25,10 @@ try {
     LeaseClassification.FINANCE,
     discountRate,
     payments,
-    false
+    true
   );
 
+  // console.log(payments.paymentStream());
   // const test = new AssetFinance('1/1/2020', 1000, 12);
   // test.getLeaseInformation();
   console.log(test.getLeaseInformation());
