@@ -26,7 +26,7 @@ export class LiabilityMonthly {
 
     if (this.prepaid) {
       // check if the month has a cash payment if it does not set the payment to 0
-      // else calculate the princpal payment
+      // else calculate the principal payment
       if (payment === 0) {
         this.principal = 0;
         this.interestPayment = 0;
