@@ -13,26 +13,6 @@ export class Liability {
   private life: number;
   private prepaid: boolean;
 
-  // constructor(
-  //   startDate: string,
-  //   private payment: number,
-  //   private paymentStream: PaymentStream[],
-  //   private interestRate: number,
-  //   private startingBalance: number,
-  //   private life: number,
-  //   private prepaid: boolean
-  // ) {
-  //   this.startingBalance = startingBalance;
-  //   this.startDate = new Date(startDate);
-  //   this.paymentStream = paymentStream;
-  //   this.payment = payment;
-  //   this.interestRate = interestRate;
-  //   this.life = life;
-  //   this.prepaid = prepaid;
-
-  //   this.monthlyTransactions = this.calculateMonthlySchedule();
-  // }
-
   setProperties(
     startDate: string,
     payment: number,
