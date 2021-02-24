@@ -15,6 +15,14 @@ export class AssetBase {
     this.life = life;
   }
 
+  setPropertiesFromJSON(schedule) {
+    const { date, beginningBalance } = schedule[0];
+    const life = schedule.length;
+    this.setProperties(date, beginningBalance, life);
+
+    this.setMonthlyTransactionsFromJSON(schedule);
+  }
+
   getStartingBalance(): number {
     return this.startingBalance;
   }
@@ -72,7 +80,14 @@ export class AssetBase {
     );
   }
 
-  setMonthlyTransactionsFromJSON(date) {
-    this.monthlyTransactions;
+  setMonthlyTransactionsFromJSON(data) {
+    this.monthlyTransactions = data.map(
+      (month) =>
+        new AssetMonthly(
+          new Date(month.date),
+          month.beginningBalance,
+          month.depreciation
+        )
+    );
   }
 }
