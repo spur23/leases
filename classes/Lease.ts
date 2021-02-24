@@ -132,6 +132,8 @@ export class Lease {
     this.interestRate = interestRate;
     this.payments = paymentObjects;
     this.prepaid = prepaid;
+    this.totalPayments = this.getSumOfPayments();
+    this.quantityOfPayments = this.getQuantityOfPayments();
 
     const paymentsArray = this.payments
       .paymentInformation()
@@ -156,26 +158,17 @@ export class Lease {
     // create and calculate a new asset based off of classification
     if (this.classification === LeaseClassification.FINANCE) {
       this.asset = new AssetFinance();
-      console.log(asset);
-      // this.asset.setPropertiesFinance(
-      //   startDate,
-      //   presentValue,
-      //   this.paymentStream.length
-      // );
+      this.asset.setPropertiesFromJSON(asset);
     } else if (this.classification === LeaseClassification.OPERATING) {
       this.asset = new AssetOperating();
-
-      this.asset.setPropertiesOperating(
-        this.startDate,
-        this.presentValue,
-        this.paymentStream.length,
-        this.getLiabilitySchedule()
-      );
+      this.asset.setPropertiesFromJSON(asset);
     } else {
       throw new Error(
         'Lease must be classified as either an operating or finance'
       );
     }
+
+    this.presentValue = this.liability.getLiabilityData()[0].beginningBalance;
   }
 
   getPayments() {
