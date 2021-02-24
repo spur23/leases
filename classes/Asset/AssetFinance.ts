@@ -20,8 +20,6 @@ export class AssetFinance extends AssetBase {
     this.setMonthlyDepreciation(depreciation);
   }
 
-  setPropertiesFinanceFromJSON() {}
-
   calculateMonthlySchedule(
     startDate: Date,
     life: number,
