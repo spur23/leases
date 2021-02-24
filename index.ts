@@ -10,7 +10,7 @@ const createLeaseFromJSON = (json) => {
 
   newLease.setPropertiesFromJSON(json);
 
-  console.log(newLease.getAssetSchedule());
+  console.log(newLease.getLeaseInformation());
 };
 
 try {
