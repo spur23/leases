@@ -6,48 +6,11 @@ import { LeaseClassification } from './enums/LeaseClassification';
 import { data } from './data';
 
 const createLeaseFromJSON = (json) => {
-  const {
-    lease,
-    prepaid,
-    description,
-    classification,
-    interestRate,
-    startDate,
-    endDate,
-    payments,
-    asset,
-    liability
-  } = json;
+  const newLease = new Lease();
 
-  const paymentArray = payments.map(
-    (el) =>
-      new Payment({
-        payment: el.payment,
-        frequency: el.frequency,
-        startDate: new Date(el.startDate).toLocaleDateString(),
-        endDate: new Date(el.endDate).toLocaleDateString()
-      })
-  );
+  newLease.setPropertiesFromJSON(json);
 
-  const paymentObjects = new Payments(paymentArray);
-  const leaseClassification =
-    classification === 'operating'
-      ? LeaseClassification.OPERATING
-      : LeaseClassification.FINANCE;
-
-  const newLease = new Lease(
-    lease,
-    description,
-    leaseClassification,
-    interestRate,
-    paymentObjects,
-    prepaid,
-    true,
-    liability,
-    asset
-  );
-
-  console.log(newLease.getLeaseInformation());
+  console.log(newLease.getAssetSchedule());
 };
 
 try {
@@ -66,7 +29,9 @@ try {
 
   // const payments = new Payments(paymentStream1);
 
-  // const test = new Lease(
+  // const test = new Lease();
+
+  // test.setProperties(
   //   name,
   //   description,
   //   LeaseClassification.OPERATING,

@@ -2,7 +2,7 @@ export const data = {
   lease: 'vehicles',
   prepaid: false,
   description: 'Vehicles leased in Mexico',
-  classification: 'operating',
+  classification: 'finance',
   interestRate: 0.046,
   totalPayments: 500,
   quantityOfPayments: 5,

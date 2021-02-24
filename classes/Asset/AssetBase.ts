@@ -6,12 +6,10 @@ export class AssetBase {
   private startDate: Date;
   private monthlyDepreciation: number;
   private monthlyTransactions: AssetMonthly[];
+  private startingBalance: number;
+  private life: number;
 
-  constructor(
-    startDate: string,
-    private startingBalance: number,
-    private life: number
-  ) {
+  setProperties(startDate: string, startingBalance: number, life: number) {
     this.startDate = new Date(startDate);
     this.startingBalance = roundNumber(startingBalance, 2);
     this.life = life;
@@ -72,5 +70,9 @@ export class AssetBase {
       this.startingBalance,
       this.monthlyDepreciation
     );
+  }
+
+  setMonthlyTransactionsFromJSON(date) {
+    this.monthlyTransactions;
   }
 }

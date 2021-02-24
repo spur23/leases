@@ -71,13 +71,17 @@ export class Lease {
 
     // create and calculate a new asset based off of classification
     if (this.classification === LeaseClassification.FINANCE) {
-      this.asset = new AssetFinance(
+      this.asset = new AssetFinance();
+
+      this.asset.setPropertiesFinance(
         this.startDate,
         this.presentValue,
         this.paymentStream.length
       );
     } else if (this.classification === LeaseClassification.OPERATING) {
-      this.asset = new AssetOperating(
+      this.asset = new AssetOperating();
+
+      this.asset.setPropertiesOperating(
         this.startDate,
         this.presentValue,
         this.paymentStream.length,
@@ -97,12 +101,18 @@ export class Lease {
       description,
       classification,
       interestRate,
+      presentValue,
       startDate,
       endDate,
       payments,
       asset,
       liability
     } = data;
+
+    const leaseClassification =
+      classification === 'operating'
+        ? LeaseClassification.OPERATING
+        : LeaseClassification.FINANCE;
 
     const paymentArray = payments.map(
       (el) =>
@@ -115,10 +125,6 @@ export class Lease {
     );
 
     const paymentObjects = new Payments(paymentArray);
-    const leaseClassification =
-      classification === 'operating'
-        ? LeaseClassification.OPERATING
-        : LeaseClassification.FINANCE;
 
     this.name = lease;
     this.description = description;
@@ -146,6 +152,30 @@ export class Lease {
       liability.length,
       this.prepaid
     );
+
+    // create and calculate a new asset based off of classification
+    if (this.classification === LeaseClassification.FINANCE) {
+      this.asset = new AssetFinance();
+      console.log(asset);
+      // this.asset.setPropertiesFinance(
+      //   startDate,
+      //   presentValue,
+      //   this.paymentStream.length
+      // );
+    } else if (this.classification === LeaseClassification.OPERATING) {
+      this.asset = new AssetOperating();
+
+      this.asset.setPropertiesOperating(
+        this.startDate,
+        this.presentValue,
+        this.paymentStream.length,
+        this.getLiabilitySchedule()
+      );
+    } else {
+      throw new Error(
+        'Lease must be classified as either an operating or finance'
+      );
+    }
   }
 
   getPayments() {

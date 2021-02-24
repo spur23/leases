@@ -4,10 +4,13 @@ import { AssetBase } from './AssetBase';
 import { LeaseClassification } from '../../enums';
 
 export class AssetFinance extends AssetBase {
-  constructor(startDate: string, startingBalance: number, life: number) {
-    super(startDate, startingBalance, life);
+  setPropertiesFinance(
+    startDate: string,
+    startingBalance: number,
+    life: number
+  ): void {
+    this.setProperties(startDate, startingBalance, life);
     this.calculateDepreciation();
-
     this.setMonthlyTransactions(this.calculateMonthlySchedule);
   }
 
@@ -16,6 +19,8 @@ export class AssetFinance extends AssetBase {
 
     this.setMonthlyDepreciation(depreciation);
   }
+
+  setPropertiesFinanceFromJSON() {}
 
   calculateMonthlySchedule(
     startDate: Date,
