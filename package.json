@@ -6,6 +6,9 @@
   "scripts": {
     "dev": "ts-node src/index.ts"
   },
+  "bin": {
+    "notes": "./bin/index.ts"
+  },
   "keywords": [],
   "author": "Jacob Sada",
   "license": "ISC",
