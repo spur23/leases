@@ -4,25 +4,27 @@ import { roundNumber } from '../utils';
 import { AssetFinance } from './Asset/AssetFinance';
 import { AssetOperating } from './Asset/AssetOperating';
 import { Liability } from './Liability/Liability';
-import { Payments } from './Payments/Payments';
 import { Payment } from './Payments/Payment';
+import { LeaseValues } from '../interfaces/LeaseValues';
+import { Payments } from '../../classes/Payments/Payments';
+import { PaymentFrequency } from '../enums';
 
 // parent class
-export class Lease {
-  private name: string;
-  private description: string;
-  private classification: LeaseClassification;
-  private interestRate: number;
-  private payments: Payments;
-  private prepaid: boolean;
-  private liability?: any;
-  private asset?: any;
-  private totalPayments: number;
-  private paymentStream: PaymentStream[];
-  private quantityOfPayments: number;
-  private presentValue: number;
-  private startDate: string;
-  private endDate: string;
+export class Lease implements LeaseValues {
+  name: string;
+  description: string;
+  classification: LeaseClassification;
+  interestRate: number;
+  payments: Payments;
+  prepaid: boolean;
+  liability?: any;
+  asset?: any;
+  totalPayments: number;
+  paymentStream: PaymentStream[];
+  quantityOfPayments: number;
+  presentValue: number;
+  startDate: string;
+  endDate: string;
 
   setProperties(
     name: string,
@@ -94,7 +96,25 @@ export class Lease {
     }
   }
 
-  setPropertiesFromJSON(data): void {
+  setPropertiesFromJSON(data: {
+    lease: string;
+    prepaid: boolean;
+    description: string;
+    classification: string;
+    interestRate: number;
+    presentValue: number;
+    startDate: string;
+    endDate: string;
+    payments: {
+      payment: number;
+      frequency: string;
+      startDate: string;
+      endDate: string;
+      payments: number;
+    }[];
+    asset: {}[];
+    liability: any[];
+  }): void {
     const {
       lease,
       prepaid,
@@ -114,15 +134,24 @@ export class Lease {
         ? LeaseClassification.OPERATING
         : LeaseClassification.FINANCE;
 
-    const paymentArray = payments.map(
-      (el) =>
-        new Payment({
-          payment: el.payment,
-          frequency: el.frequency,
-          startDate: new Date(el.startDate).toLocaleDateString(),
-          endDate: new Date(el.endDate).toLocaleDateString()
-        })
-    );
+    const paymentArray = payments.map((el) => {
+      let frequency;
+      if (el.frequency === 'annual') {
+        frequency = PaymentFrequency.Annual;
+      } else if (el.frequency === 'semiannual') {
+        frequency = PaymentFrequency.SemiAnnual;
+      } else if (el.frequency === 'quarterly') {
+        frequency = PaymentFrequency.Quarterly;
+      } else {
+        frequency = PaymentFrequency.Monthly;
+      }
+      return new Payment({
+        payment: el.payment,
+        frequency: frequency,
+        startDate: new Date(el.startDate).toLocaleDateString(),
+        endDate: new Date(el.endDate).toLocaleDateString()
+      });
+    });
 
     const paymentObjects = new Payments(paymentArray);
 

@@ -1,6 +1,5 @@
-import { PaymentFrequency } from '../../enums';
 import { PaymentStream } from '../../interfaces';
-import { addMonth, monthlyCalculation } from '../../utils';
+import { monthlyCalculation } from '../../utils';
 import { Payment } from './Payment';
 
 export class Payments {
