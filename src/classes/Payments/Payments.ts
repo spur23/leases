@@ -1,6 +1,7 @@
 import { PaymentStream } from '../../interfaces';
 import { monthlyCalculation } from '../../utils';
 import { Payment } from './Payment';
+import { PaymentInformation } from '../../interfaces/PaymentInformation';
 
 export class Payments {
   payments: Payment[];
@@ -17,11 +18,11 @@ export class Payments {
     return result;
   }
 
-  paymentInformation() {
+  paymentInformation(): PaymentInformation[] {
     return this.payments.map((payment) => payment.getPaymentInformation());
   }
 
-  quantityOfPayments() {
+  quantityOfPayments(): number {
     return this.payments.reduce((a, b) => a + b.getPayments(), 0);
   }
 
