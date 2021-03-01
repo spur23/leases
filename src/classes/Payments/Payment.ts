@@ -9,10 +9,12 @@ export class Payment {
   private payments: number;
 
   constructor(config: PaymentValues) {
-    this.payment = config.payment;
-    this.frequency = config.frequency;
-    this.startDate = new Date(config.startDate);
-    this.endDate = new Date(config.endDate);
+    const { payment, frequency, startDate, endDate } = config;
+
+    this.payment = payment;
+    this.frequency = frequency;
+    this.startDate = new Date(startDate);
+    this.endDate = new Date(endDate);
 
     // calculate the number of months between the start date and end date
     let years = this.endDate.getFullYear() - this.startDate.getFullYear();
