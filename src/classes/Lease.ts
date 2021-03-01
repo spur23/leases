@@ -1,5 +1,4 @@
 import { LeaseClassification } from '../enums';
-import { PaymentStream } from '../interfaces';
 import { roundNumber } from '../utils';
 import { AssetFinance } from './Asset/AssetFinance';
 import { AssetOperating } from './Asset/AssetOperating';
@@ -8,6 +7,59 @@ import { Payment } from './Payments/Payment';
 import { LeaseValues } from '../interfaces/LeaseValues';
 import { PaymentFrequency } from '../enums';
 import { Payments } from './Payments/Payments';
+import { AssetSchedulePrint } from '../interfaces/AssetSchedulePrint';
+import { LiabilitySchedulePrint } from '../interfaces/LiabilitySchedulePrint';
+import { PaymentInformation } from '../interfaces/PaymentInformation';
+import { PaymentStream } from '../interfaces/PaymentStream';
+
+interface LeaseInformation {
+  lease: string;
+  prepaid: boolean;
+  description: string;
+  classification: string;
+  interestRate: number;
+  totalPayments: number;
+  quantityOfPayments: number;
+  presentValue: number;
+  startDate: string;
+  endDate: string;
+}
+
+interface AllLeaseInformation {
+  lease: string;
+  prepaid: boolean;
+  description: string;
+  classification: string;
+  interestRate: number;
+  totalPayments: number;
+  quantityOfPayments: number;
+  presentValue: number;
+  startDate: string;
+  endDate: string;
+  payments: any[];
+  asset: AssetSchedulePrint[];
+  liability: LiabilitySchedulePrint[];
+}
+
+interface PropertiesJSON {
+  lease: string;
+  prepaid: boolean;
+  description: string;
+  classification: string;
+  interestRate: number;
+  presentValue: number;
+  startDate: string;
+  endDate: string;
+  payments: {
+    payment: number;
+    frequency: string;
+    startDate: string;
+    endDate: string;
+    payments: number;
+  }[];
+  asset: {}[];
+  liability: any[];
+}
 
 // parent class
 export class Lease implements LeaseValues {
@@ -108,25 +160,7 @@ export class Lease implements LeaseValues {
     }
   }
 
-  setPropertiesFromJSON(data: {
-    lease: string;
-    prepaid: boolean;
-    description: string;
-    classification: string;
-    interestRate: number;
-    presentValue: number;
-    startDate: string;
-    endDate: string;
-    payments: {
-      payment: number;
-      frequency: string;
-      startDate: string;
-      endDate: string;
-      payments: number;
-    }[];
-    asset: {}[];
-    liability: any[];
-  }): void {
+  setPropertiesFromJSON(data: PropertiesJSON): void {
     const {
       lease,
       prepaid,
@@ -212,11 +246,34 @@ export class Lease implements LeaseValues {
     this.presentValue = this.liability.getLiabilityData()[0].beginningBalance;
   }
 
-  getPayments() {
+  /**
+   * gets an array of payments
+   */
+  getPayments(): PaymentInformation[] {
     return this.payments.paymentInformation();
   }
+  /**
+   * gets the lease data
+   */
+  getLeaseInformation(): LeaseInformation {
+    return {
+      lease: this.name,
+      prepaid: this.prepaid,
+      description: this.description,
+      classification: this.classification,
+      interestRate: this.interestRate,
+      totalPayments: this.totalPayments,
+      quantityOfPayments: this.quantityOfPayments,
+      presentValue: this.presentValue,
+      startDate: this.startDate,
+      endDate: this.endDate
+    };
+  }
 
-  getLeaseInformation() {
+  /**
+   * gets all of the lease data
+   */
+  getAllLeaseInformation(): AllLeaseInformation {
     return {
       lease: this.name,
       prepaid: this.prepaid,
@@ -234,26 +291,64 @@ export class Lease implements LeaseValues {
     };
   }
 
-  getSumOfPayments() {
+  /**
+   * Retrieves the current month asset and liability schedules by providing the month requested as a string
+   * @param month
+   */
+  getCurrentMonth(
+    month: string
+  ): { lease: string; schedules: { asset; liability } } {
+    const asset = this.getAssetSchedule().filter(
+      (el) => new Date(month).valueOf() === new Date(el.date).valueOf()
+    );
+
+    const liability = this.getLiabilitySchedule().filter(
+      (el) => new Date(month).valueOf() === new Date(el.date).valueOf()
+    );
+
+    return {
+      lease: this.name,
+      schedules: {
+        asset,
+        liability
+      }
+    };
+  }
+
+  /**
+   * gets the total payments
+   */
+  getSumOfPayments(): number {
     return this.payments.sumAllPayments();
   }
 
-  getQuantityOfPayments() {
+  /**
+   * gets the quantitiy of payments
+   */
+  getQuantityOfPayments(): number {
     return this.payments.quantityOfPayments();
   }
-
-  getPaymentStream() {
+  /**
+   * gets all of the payments as an array
+   */
+  getPaymentStream(): PaymentStream[] {
     return this.payments.paymentStream();
   }
-
-  getAssetSchedule() {
+  /**
+   * gets the asset schedule as an array
+   */
+  getAssetSchedule(): AssetSchedulePrint[] {
     return this.asset.getAssetData();
   }
-
-  getLiabilitySchedule() {
+  /**
+   * gets the liability schedule as an array
+   */
+  getLiabilitySchedule(): LiabilitySchedulePrint[] {
     return this.liability.getLiabilityData();
   }
-
+  /**
+   * Private function that calculates the present value of all payments
+   */
   private calculatePresentValue(): number {
     const paymentStream = this.paymentStream.map((month) => month.payment);
     const rateOfReturn = this.interestRate / 12;
