@@ -7,6 +7,7 @@ import { AssetCalculationObject } from './AssetCalculationObject';
 import { AssetSchedulePrint } from './AssetSchedulePrint';
 import { LiabilitySchedulePrint } from './LiabilitySchedulePrint';
 import { LeaseValues } from './LeaseValues';
+import { LiabilityValues } from './LiabilityValues';
 
 export {
   AssetSchedule,
@@ -17,5 +18,6 @@ export {
   AssetCalculationObject,
   AssetSchedulePrint,
   LiabilitySchedulePrint,
-  LeaseValues
+  LeaseValues,
+  LiabilityValues
 };

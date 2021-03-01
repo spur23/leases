@@ -6,25 +6,37 @@ import { AssetOperating } from './Asset/AssetOperating';
 import { Liability } from './Liability/Liability';
 import { Payment } from './Payments/Payment';
 import { LeaseValues } from '../interfaces/LeaseValues';
-import { Payments } from '../../classes/Payments/Payments';
 import { PaymentFrequency } from '../enums';
+import { Payments } from './Payments/Payments';
 
 // parent class
 export class Lease implements LeaseValues {
   name: string;
   description: string;
-  classification: LeaseClassification;
+  classification!: LeaseClassification;
   interestRate: number;
-  payments: Payments;
+  payments!: Payments;
   prepaid: boolean;
   liability?: any;
   asset?: any;
   totalPayments: number;
-  paymentStream: PaymentStream[];
+  paymentStream!: PaymentStream[];
   quantityOfPayments: number;
   presentValue: number;
   startDate: string;
   endDate: string;
+
+  constructor() {
+    this.name = '';
+    this.description = '';
+    this.totalPayments = 0;
+    this.quantityOfPayments = 0;
+    this.presentValue = 0;
+    this.startDate = '';
+    this.endDate = '';
+    this.interestRate = 0;
+    this.prepaid = false;
+  }
 
   setProperties(
     name: string,

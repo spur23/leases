@@ -2,16 +2,17 @@ import { LiabilitySchedulePrint } from '../../interfaces';
 import { PaymentStream } from '../../interfaces';
 import { calculateLiability, roundNumber } from '../../utils';
 import { LiabilityMonthly } from './LiabilityMonthly';
+import { LiabilityValues } from '../../interfaces/LiabilityValues';
 
-export class Liability {
-  private startDate: Date;
-  private monthlyTransactions: LiabilityMonthly[];
-  private payment: number;
-  private paymentStream: PaymentStream[];
-  private interestRate: number;
-  private startingBalance: number;
-  private life: number;
-  private prepaid: boolean;
+export class Liability implements LiabilityValues {
+  startDate: Date;
+  monthlyTransactions: LiabilityMonthly[];
+  payment: number;
+  paymentStream: PaymentStream[];
+  interestRate: number;
+  startingBalance: number;
+  life: number;
+  prepaid: boolean;
 
   setProperties(
     startDate: string,

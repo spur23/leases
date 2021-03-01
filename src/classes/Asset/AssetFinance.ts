@@ -2,6 +2,7 @@ import { AssetMonthly } from './AssetMonthly';
 import { calculateAssetSchedule } from '../../utils/index';
 import { AssetBase } from './AssetBase';
 import { LeaseClassification } from '../../enums';
+import { LiabilitySchedule } from '../../interfaces/LiabilitySchedule';
 
 export class AssetFinance extends AssetBase {
   setPropertiesFinance(

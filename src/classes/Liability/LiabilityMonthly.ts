@@ -2,19 +2,19 @@ import { LiabilityMonthlyValues } from '../../interfaces';
 import { roundNumber } from '../../utils';
 
 export class LiabilityMonthly {
-  private interestExpense: number;
-  private principal: number;
-  private endingBalance: number;
-  shortTermBalance: number;
-  longTermBalance: number;
+  interestExpense: number;
+  principal: number;
+  endingBalance: number;
+  shortTermBalance?: number;
+  longTermBalance?: number;
 
   constructor(
-    private date: Date,
-    private payment: number,
-    private beginningBalance: number,
-    private interestRate: number,
-    private interestPayment: number,
-    private prepaid?: boolean
+    public date: Date,
+    public payment: number,
+    public beginningBalance: number,
+    public interestRate: number,
+    public interestPayment: number,
+    public prepaid?: boolean
   ) {
     this.date = date;
     this.beginningBalance = beginningBalance;
