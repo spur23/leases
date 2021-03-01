@@ -1,12 +1,12 @@
 import { roundNumber } from '../../utils/index';
 
 export class AssetMonthly {
-  private endingBalance: number;
+  public endingBalance: number;
 
   constructor(
-    private date: Date,
-    private beginningBalance: number,
-    private depreciation: number
+    public date: Date,
+    public beginningBalance: number,
+    public depreciation: number
   ) {
     this.beginningBalance = beginningBalance;
     this.depreciation = depreciation;

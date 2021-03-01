@@ -23,6 +23,7 @@ export class AssetOperating extends AssetBase {
       (accumulator, currentValue) => accumulator + currentValue.payment,
       0
     );
+
     return (startDate, life, startingBalance) => {
       this.straightLineRent = totalPayments / life;
 
