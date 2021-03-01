@@ -3,11 +3,11 @@ import { roundNumber } from '../../utils';
 import { AssetMonthly } from './AssetMonthly';
 
 export class AssetBase {
-  private startDate: Date;
-  private monthlyDepreciation: number;
-  private monthlyTransactions: AssetMonthly[];
-  private startingBalance: number;
-  private life: number;
+  startDate!: Date;
+  monthlyDepreciation!: number;
+  monthlyTransactions!: AssetMonthly[];
+  startingBalance!: number;
+  life!: number;
 
   setProperties(startDate: string, startingBalance: number, life: number) {
     this.startDate = new Date(startDate);
@@ -15,7 +15,7 @@ export class AssetBase {
     this.life = life;
   }
 
-  setPropertiesFromJSON(schedule) {
+  setPropertiesFromJSON(schedule: any) {
     const { date, beginningBalance } = schedule[0];
     const life = schedule.length;
     this.setProperties(date, beginningBalance, life);
@@ -71,7 +71,7 @@ export class AssetBase {
     this.monthlyDepreciation = roundNumber(depreciation, 2);
   }
 
-  setMonthlyTransactions(callback) {
+  setMonthlyTransactions(callback: any) {
     this.monthlyTransactions = callback(
       this.startDate,
       this.life,
@@ -80,7 +80,7 @@ export class AssetBase {
     );
   }
 
-  setMonthlyTransactionsFromJSON(data) {
+  setMonthlyTransactionsFromJSON(data: any) {
     this.monthlyTransactions = data.map(
       (month) =>
         new AssetMonthly(

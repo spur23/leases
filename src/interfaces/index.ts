@@ -10,7 +10,7 @@ import { LeaseValues } from './LeaseValues';
 import { LiabilityValues } from './LiabilityValues';
 import { PaymentInformation } from './PaymentInformation';
 
-export {
+export type {
   AssetSchedule,
   LiabilitySchedule,
   PaymentStream,
