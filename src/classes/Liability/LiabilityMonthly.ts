@@ -43,7 +43,11 @@ export class LiabilityMonthly {
         2
       );
     } else {
-      this.principal = payment - this.interestExpense;
+      if (payment === 0) {
+        this.principal = 0;
+      } else {
+        this.principal = payment - this.interestExpense;
+      }
       this.endingBalance = roundNumber(
         this.beginningBalance - this.principal,
         2

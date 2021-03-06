@@ -1,4 +1,4 @@
-export default (dateFrom: Date, dateTo: Date): number | never => {
+const paymentStreamCalc = (dateFrom: Date, dateTo: Date): number | never => {
   const monthFrom = dateFrom.getMonth() + 1;
   const monthTo = dateTo.getMonth() + 1;
   const yearFrom = dateFrom.getFullYear();
@@ -26,3 +26,5 @@ export default (dateFrom: Date, dateTo: Date): number | never => {
 
   return result;
 };
+
+export default paymentStreamCalc;

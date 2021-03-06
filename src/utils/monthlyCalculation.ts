@@ -3,7 +3,7 @@ import { addMonth } from './addMonth';
 /**
  *Calculates the next month and next payment depending on the payment frequency.
  */
-export default (
+const monthlyCalculation = (
   y: number,
   startDate: string,
   payment: number,
@@ -30,3 +30,5 @@ export default (
 
   return { nextMonth, monthlyPayment };
 };
+
+export default monthlyCalculation;

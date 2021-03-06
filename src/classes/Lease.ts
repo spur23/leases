@@ -77,6 +77,8 @@ export class Lease implements LeaseValues {
   presentValue: number;
   startDate: string;
   endDate: string;
+  deferredRent: number;
+  leaseIncentive: number;
 
   constructor() {
     this.name = '';
@@ -96,7 +98,9 @@ export class Lease implements LeaseValues {
     classification: LeaseClassification,
     interestRate: number,
     payments: Payments,
-    prepaid: boolean
+    prepaid: boolean,
+    deferredRent?: number,
+    leaseIncentive?: number
   ): void {
     this.name = name;
     this.description = description;
@@ -150,6 +154,8 @@ export class Lease implements LeaseValues {
       this.asset.setPropertiesOperating(
         this.startDate,
         this.presentValue,
+        deferredRent,
+        leaseIncentive,
         this.paymentStream.length,
         this.getLiabilitySchedule()
       );
@@ -167,9 +173,6 @@ export class Lease implements LeaseValues {
       description,
       classification,
       interestRate,
-      presentValue,
-      startDate,
-      endDate,
       payments,
       asset,
       liability

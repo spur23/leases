@@ -9,20 +9,26 @@ export class AssetOperating extends AssetBase {
   setPropertiesOperating(
     startDate: string,
     startingBalance: number,
+    deferredRent: number,
+    leaseIncentive: number,
     life: number,
     liabilitySchedule: LiabilitySchedule[]
   ): void {
-    this.setProperties(startDate, startingBalance, life);
+    const beginningBalance = startingBalance - deferredRent - leaseIncentive;
+
+    this.setProperties(startDate, beginningBalance, life);
     this.setMonthlyTransactions(
       this.calculateMonthlySchedule(liabilitySchedule)
     );
   }
 
   calculateMonthlySchedule(liabilitySchedule: LiabilitySchedule[]) {
-    const totalPayments = liabilitySchedule.reduce(
-      (accumulator, currentValue) => accumulator + currentValue.payment,
-      0
-    );
+    // const totalPayments = liabilitySchedule.reduce(
+    //   (accumulator, currentValue) => accumulator + currentValue.payment,
+    //   0
+    // );
+    console.log(this.startingBalance);
+    const totalPayments = this.startingBalance;
 
     return (startDate, life, startingBalance) => {
       this.straightLineRent = totalPayments / life;

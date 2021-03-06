@@ -43,7 +43,9 @@ export interface LeaseValues {
     classification: LeaseClassification,
     interestRate: number,
     payments: Payments,
-    prepaid: boolean
+    prepaid: boolean,
+    deferredRent: number,
+    leaseIncetive: number
   ) => void;
   setPropertiesFromJSON: (data: JSONData) => void;
 }

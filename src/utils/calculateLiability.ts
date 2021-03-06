@@ -4,7 +4,7 @@ import { PaymentStream } from '../interfaces';
 /**
  *Calculates liability monthly schedule.
  */
-export default (
+const calculateLiability = (
   paymentStream: PaymentStream[],
   startingBalance: number,
   interestRate: number,
@@ -82,3 +82,5 @@ export default (
 
   return result;
 };
+
+export default calculateLiability;

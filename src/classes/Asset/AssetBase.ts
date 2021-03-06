@@ -51,7 +51,7 @@ export class AssetBase {
         return {
           date: date.toLocaleDateString(),
           beginningBalance,
-          depreciation: endingBalance + depreciation,
+          depreciation: roundNumber(endingBalance + depreciation, 2),
           endingBalance: endingBalance - endingBalance
         };
       } else {

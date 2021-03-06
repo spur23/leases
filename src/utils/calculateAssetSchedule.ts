@@ -3,7 +3,7 @@ import { LeaseClassification } from '../enums';
 import { AssetCalculationObject } from '../interfaces';
 import { addMonth } from './addMonth';
 
-export default (data: AssetCalculationObject) => {
+const calculateAssetSchedule = (data: AssetCalculationObject) => {
   const {
     startDate,
     life,
@@ -43,3 +43,5 @@ export default (data: AssetCalculationObject) => {
 
   return result;
 };
+
+export default calculateAssetSchedule;

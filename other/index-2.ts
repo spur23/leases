@@ -1,10 +1,10 @@
-import { Payment } from './classes/Payments/Payment';
-import { PaymentFrequency } from './enums';
-import { Payments } from './classes/Payments/Payments';
-import { Lease } from './classes/Lease';
-import { LeaseClassification } from './enums/LeaseClassification';
+import { Payment } from '../src/classes/Payments/Payment';
+import { PaymentFrequency } from '../src/enums';
+import { Payments } from '../src/classes/Payments/Payments';
+import { Lease } from '../src/classes/Lease';
+import { LeaseClassification } from '../src/enums/LeaseClassification';
 import { data } from './data';
-import { Leases } from './classes/Leases';
+import { Leases } from '../src/classes/Leases';
 
 const createLeaseFromJSON = (json) => {
   const newLease = new Lease();
