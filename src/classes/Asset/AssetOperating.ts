@@ -27,7 +27,6 @@ export class AssetOperating extends AssetBase {
     //   (accumulator, currentValue) => accumulator + currentValue.payment,
     //   0
     // );
-    console.log(this.startingBalance);
     const totalPayments = this.startingBalance;
 
     return (startDate, life, startingBalance) => {

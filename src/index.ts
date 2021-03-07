@@ -25,7 +25,7 @@ try {
       payment: 100,
       frequency: PaymentFrequency.Monthly,
       startDate: '1/1/2020',
-      endDate: '4/30/2020'
+      endDate: '7/31/2020'
     })
   ];
 
@@ -47,6 +47,7 @@ try {
   );
 
   console.log(lease.asset);
+  console.log(lease.liability.monthlyTransactions);
 
   // const discountRate2 = 8.32;
   // const name2 = 'rental property';
