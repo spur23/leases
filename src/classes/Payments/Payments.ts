@@ -45,7 +45,8 @@ export class Payments {
 
         arr.push({
           month: nextMonth,
-          payment: monthlyPayment
+          payment: monthlyPayment,
+          frequency: frequency
         });
       }
     }
