@@ -353,15 +353,76 @@ export class Lease implements LeaseValues {
    * Private function that calculates the present value of all payments
    */
   private calculatePresentValue(): number {
-    const paymentStream = this.paymentStream.map((month) => month.payment);
+    const paymentStream = this.paymentStream.map((month) => {
+      return { payment: month.payment, frequency: month.frequency };
+    });
     const rateOfReturn = this.interestRate / 12;
-    const presentValue = paymentStream.reduce(
+
+    let presentValue = 0;
+    if (this.prepaid) {
+      presentValue = this.calculatePresentValuePaymentBeginning(
+        paymentStream,
+        this.interestRate
+      );
+    } else {
+      presentValue = this.calculatePresentValuePaymentEnding(
+        paymentStream,
+        rateOfReturn
+      );
+    }
+
+    return roundNumber(presentValue, 2);
+  }
+
+  private calculatePresentValuePaymentBeginning(
+    paymentStream,
+    interestRate
+  ): number {
+    const correctedPaymentStream = paymentStream.filter(
+      (payment) => payment.payment !== 0
+    );
+
+    let result = correctedPaymentStream.reduce(
+      (accumulator, currentValue, index) => {
+        const { payment, frequency } = currentValue;
+
+        if (index === 0) return payment;
+
+        const rateOfReturn = this.presentValueInterestRate(
+          interestRate,
+          frequency
+        );
+
+        return accumulator + payment / Math.pow(1 + rateOfReturn, index);
+      },
+      0
+    );
+
+    return result;
+  }
+
+  private calculatePresentValuePaymentEnding(
+    paymentStream,
+    rateOfReturn
+  ): number {
+    return paymentStream.reduce(
       (accumulator, currentValue, index) =>
         accumulator + currentValue / Math.pow(rateOfReturn + 1, index + 1),
       0
     );
+  }
 
-    return roundNumber(presentValue, 2);
+  private presentValueInterestRate(interestRate, frequency) {
+    let rateOfReturn = interestRate;
+    if (frequency === PaymentFrequency.Monthly) {
+      rateOfReturn = interestRate / 12;
+    } else if (frequency === PaymentFrequency.Quarterly) {
+      rateOfReturn = interestRate / 4;
+    } else if (frequency === PaymentFrequency.SemiAnnual) {
+      rateOfReturn = interestRate / 2;
+    }
+
+    return rateOfReturn;
   }
 
   // applyData(json) {
