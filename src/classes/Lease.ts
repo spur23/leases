@@ -82,6 +82,7 @@ export class Lease implements LeaseValues {
   initialDirectCosts: number;
   economicLife: number;
   purchaseOption: boolean;
+  purchasePrice: number;
 
   constructor() {
     this.name = '';
@@ -106,7 +107,8 @@ export class Lease implements LeaseValues {
     leaseIncentive?: number,
     initialDirectCosts?: number,
     economicLife?: number,
-    purchaseOption?: boolean
+    purchaseOption?: boolean,
+    purchasePrice?: number
   ): void {
     this.name = name;
     this.description = description;
@@ -121,6 +123,7 @@ export class Lease implements LeaseValues {
     this.initialDirectCosts = initialDirectCosts;
     this.economicLife = economicLife;
     this.purchaseOption = purchaseOption;
+    this.purchasePrice = purchasePrice;
 
     // create and sort the payments array to get the start and end dates of the lease
     const paymentsArray = this.payments
@@ -157,7 +160,9 @@ export class Lease implements LeaseValues {
       this.asset.setPropertiesFinance(
         this.startDate,
         this.presentValue,
-        this.paymentStream.length
+        this.paymentStream.length,
+        this.purchaseOption,
+        this.economicLife
       );
     } else if (this.classification === LeaseClassification.OPERATING) {
       this.asset = new AssetOperating();
