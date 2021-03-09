@@ -42,6 +42,7 @@ export interface LeaseValues {
   initialDirectCosts: number;
   economicLife: number;
   purchaseOption: boolean;
+  purchasePrice: number;
   setProperties: (
     name: string,
     description: string,
