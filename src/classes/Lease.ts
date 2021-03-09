@@ -156,7 +156,8 @@ export class Lease implements LeaseValues {
       this.quantityOfPayments,
       this.prepaid,
       this.purchaseOption,
-      this.purchasePrice
+      this.purchasePrice,
+      this.classification
     );
 
     const liabilityBalance = this.liability.getLiabilityData()[0]
