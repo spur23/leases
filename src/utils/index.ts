@@ -2,7 +2,7 @@ import { roundNumber } from './roundNumber';
 import { addMonth } from './addMonth';
 import paymentStreamCalc from './paymentStreamCalc';
 import monthlyCalculation from './monthlyCalculation';
-import calculateLiability from './calculateLiability';
+import generateLiability from './calculateLiability';
 import calculateAssetSchedule from './calculateAssetSchedule';
 
 export {
@@ -10,6 +10,6 @@ export {
   addMonth,
   paymentStreamCalc,
   monthlyCalculation,
-  calculateLiability,
+  generateLiability,
   calculateAssetSchedule
 };

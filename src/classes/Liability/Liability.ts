@@ -1,6 +1,6 @@
 import { LiabilitySchedulePrint } from '../../interfaces';
 import { PaymentStream } from '../../interfaces';
-import { calculateLiability } from '../../utils';
+import { generateLiability } from '../../utils';
 import { LiabilityMonthly } from './LiabilityMonthly';
 import { LiabilityValues } from '../../interfaces/LiabilityValues';
 
@@ -60,7 +60,7 @@ export class Liability implements LiabilityValues {
   }
 
   calculateMonthlySchedule(): LiabilityMonthly[] {
-    const monthlySchedule = calculateLiability(
+    const monthlySchedule = generateLiability(
       this.paymentStream,
       this.startingBalance,
       this.interestRate,
