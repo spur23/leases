@@ -378,8 +378,8 @@ export class Lease implements LeaseValues {
     paymentStream: { payment: number; frequency: string }[],
     interestRate: number
   ): number {
-    const correctedPaymentStream = paymentStream.filter(
-      (payment) => payment.payment !== 0
+    const correctedPaymentStream = this.correctPaymentStreamForPVCalc(
+      paymentStream
     );
 
     let result = correctedPaymentStream.reduce(
@@ -405,8 +405,8 @@ export class Lease implements LeaseValues {
     paymentStream: { payment: number; frequency: string }[],
     interestRate: number
   ): number {
-    const correctedPaymentStream = paymentStream.filter(
-      (payment) => payment.payment !== 0
+    const correctedPaymentStream = this.correctPaymentStreamForPVCalc(
+      paymentStream
     );
 
     return correctedPaymentStream.reduce((accumulator, currentValue, index) => {
@@ -431,5 +431,16 @@ export class Lease implements LeaseValues {
     }
 
     return rateOfReturn;
+  }
+
+  /**
+   * corrects the payment stream due to payment frequency
+   * @param paymentStream
+   * @returns
+   */
+  private correctPaymentStreamForPVCalc(
+    paymentStream: { payment: number; frequency: string }[]
+  ) {
+    return paymentStream.filter((payment) => payment.payment !== 0);
   }
 }
