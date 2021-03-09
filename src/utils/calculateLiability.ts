@@ -19,11 +19,12 @@ const calculateLiability = (
     const { frequency, payment } = payments[i];
 
     const annlPayments = annualPayments(frequency);
+    const correctedInterestRate = interestRate / annlPayments;
 
     if (i === 0) {
       if (prepaid) {
         const interestExpense =
-          (startingBalance - payment) * (interestRate / annlPayments);
+          (startingBalance - payment) * correctedInterestRate;
         const principal = payment;
         const interestPayment = 0;
         const endingBalance =
@@ -43,7 +44,7 @@ const calculateLiability = (
 
         result.push(month);
       } else {
-        const interestExpense = startingBalance * (interestRate / annlPayments);
+        const interestExpense = startingBalance * correctedInterestRate;
         const principal = payment;
         const interestPayment = 0;
         const endingBalance =
@@ -72,7 +73,7 @@ const calculateLiability = (
         ].getMonthlyData();
 
         let currentMonthInterestExpense =
-          (endingBalance - payment) * (interestRate / annlPayments);
+          (endingBalance - payment) * correctedInterestRate;
 
         const principal = payment - interestExpense;
 
@@ -107,7 +108,7 @@ const calculateLiability = (
         ].getMonthlyData();
 
         const currentMonthInterestExpense =
-          endingBalance * (interestRate / annlPayments);
+          endingBalance * correctedInterestRate;
 
         const principal = payment;
 
