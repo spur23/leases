@@ -100,7 +100,8 @@ export class Lease implements LeaseValues {
     payments: Payments,
     prepaid: boolean,
     deferredRent?: number,
-    leaseIncentive?: number
+    leaseIncentive?: number,
+    initialDirectCosts?: number
   ): void {
     this.name = name;
     this.description = description;
@@ -156,6 +157,7 @@ export class Lease implements LeaseValues {
         this.presentValue,
         deferredRent,
         leaseIncentive,
+        initialDirectCosts,
         this.paymentStream.length,
         this.getLiabilitySchedule()
       );
