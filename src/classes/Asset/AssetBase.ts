@@ -31,7 +31,7 @@ export class AssetBase {
     return this.life;
   }
 
-  getMonthlyTransactions() {
+  getMonthlyTransactions(): AssetMonthly[] {
     return this.monthlyTransactions;
   }
 
@@ -71,7 +71,7 @@ export class AssetBase {
     this.monthlyDepreciation = roundNumber(depreciation, 2);
   }
 
-  setMonthlyTransactions(callback: any) {
+  setMonthlyTransactions(callback: Function): void {
     this.monthlyTransactions = callback(
       this.startDate,
       this.life,
@@ -80,7 +80,7 @@ export class AssetBase {
     );
   }
 
-  setMonthlyTransactionsFromJSON(data: any) {
+  setMonthlyTransactionsFromJSON(data: any): void {
     this.monthlyTransactions = data.map(
       (month) =>
         new AssetMonthly(
