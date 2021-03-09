@@ -409,15 +409,17 @@ export class Lease implements LeaseValues {
       paymentStream
     );
 
-    return correctedPaymentStream.reduce((accumulator, currentValue, index) => {
-      const { payment, frequency } = currentValue;
-      const rateOfReturn = this.presentValueInterestRate(
-        interestRate,
-        frequency
-      );
+    // return correctedPaymentStream.reduce((accumulator, currentValue, index) => {
+    //   const { payment, frequency } = currentValue;
+    //   const rateOfReturn = this.presentValueInterestRate(
+    //     interestRate,
+    //     frequency
+    //   );
 
-      return accumulator + payment / Math.pow(1 + rateOfReturn, index + 1);
-    }, 0);
+    //   return accumulator + payment / Math.pow(1 + rateOfReturn, index + 1);
+    // }, 0);
+    const reducerFunction = this.calcPVWithEndingPayment(interestRate);
+    return correctedPaymentStream.reduce(reducerFunction, 0);
   }
 
   private presentValueInterestRate(interestRate, frequency) {
@@ -442,5 +444,21 @@ export class Lease implements LeaseValues {
     paymentStream: { payment: number; frequency: string }[]
   ) {
     return paymentStream.filter((payment) => payment.payment !== 0);
+  }
+
+  private calcPVWithEndingPayment(interestRate) {
+    return (
+      accumulator: number,
+      currentValue: { payment: number; frequency: string },
+      index: number
+    ) => {
+      const { payment, frequency } = currentValue;
+      const rateOfReturn = this.presentValueInterestRate(
+        interestRate,
+        frequency
+      );
+
+      return accumulator + payment / Math.pow(1 + rateOfReturn, index + 1);
+    };
   }
 }
