@@ -7,7 +7,9 @@ export class AssetFinance extends AssetBase {
   setPropertiesFinance(
     startDate: string,
     startingBalance: number,
-    life: number
+    life: number,
+    purchaseOption: boolean,
+    economicLife?: number
   ): void {
     this.setProperties(startDate, startingBalance, life);
     this.calculateDepreciation();
