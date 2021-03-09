@@ -432,8 +432,4 @@ export class Lease implements LeaseValues {
 
     return rateOfReturn;
   }
-
-  // applyData(json) {
-  //   Object.assign(this, json);
-  // }
 }
