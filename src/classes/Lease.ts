@@ -116,6 +116,11 @@ export class Lease implements LeaseValues {
     this.interestRate = interestRate / 100;
     this.prepaid = prepaid;
     this.quantityOfPayments = this.getQuantityOfPayments();
+    this.deferredRent = deferredRent;
+    this.leaseIncentive = leaseIncentive;
+    this.initialDirectCosts = initialDirectCosts;
+    this.economicLife = economicLife;
+    this.purchaseOption = purchaseOption;
 
     // create and sort the payments array to get the start and end dates of the lease
     const paymentsArray = this.payments
@@ -160,9 +165,9 @@ export class Lease implements LeaseValues {
       this.asset.setPropertiesOperating(
         this.startDate,
         this.presentValue,
-        deferredRent,
-        leaseIncentive,
-        initialDirectCosts,
+        this.deferredRent,
+        this.leaseIncentive,
+        this.initialDirectCosts,
         this.paymentStream.length,
         this.getLiabilitySchedule()
       );
