@@ -20,16 +20,6 @@ const calculateLiability = (
 
     const annlPayments = annualPayments(frequency);
 
-    // if (frequency === PaymentFrequency.Monthly) {
-    //   annualPayments = 12;
-    // } else if (frequency === PaymentFrequency.Quarterly) {
-    //   annualPayments = 4;
-    // } else if (frequency === PaymentFrequency.SemiAnnual) {
-    //   annualPayments = 2;
-    // } else if (frequency === PaymentFrequency.Annual) {
-    //   annualPayments = 1;
-    // }
-
     if (i === 0) {
       if (prepaid) {
         const interestExpense =
