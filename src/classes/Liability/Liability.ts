@@ -14,8 +14,6 @@ export class Liability implements LiabilityValues {
   startingBalance: number;
   life: number;
   prepaid: boolean;
-  purchaseOption: boolean;
-  purchasePrice: number;
 
   setProperties(
     startDate: string,
@@ -25,18 +23,12 @@ export class Liability implements LiabilityValues {
     startingBalance: number,
     life: number,
     prepaid: boolean,
-    purchaseOption: boolean,
-    purchasePrice: number,
     classification: string
   ) {
     if (classification === LeaseClassification.OPERATING) {
       this.startingBalance = startingBalance;
     } else {
-      if (purchaseOption) {
-        this.startingBalance = startingBalance + purchasePrice;
-      } else {
-        this.startingBalance = startingBalance;
-      }
+      this.startingBalance = startingBalance;
     }
 
     this.startDate = new Date(startDate);

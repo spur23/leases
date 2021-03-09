@@ -40,9 +40,8 @@ export interface LeaseValues {
   deferredRent: number;
   leaseIncentive: number;
   initialDirectCosts: number;
+  useEconomicLife: boolean;
   economicLife: number;
-  purchaseOption: boolean;
-  purchasePrice: number;
   setProperties: (
     name: string,
     description: string,

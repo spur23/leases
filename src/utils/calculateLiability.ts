@@ -13,13 +13,13 @@ const generateLiability = (
 ) => {
   let result = [];
   const payments = [...paymentStream];
-
+  console.log('payments', payments);
   for (let i = 0; i < payments.length; i++) {
     const date = new Date(payments[i].month);
     const { frequency, payment } = payments[i];
 
-    const annlPayments = annualPayments(frequency);
-    const correctedInterestRate = interestRate / annlPayments;
+    // const annlPayments = annualPayments(frequency);
+    const correctedInterestRate = interestRate / 12;
 
     result.push(
       calculateLiability(

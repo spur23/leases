@@ -19,8 +19,6 @@ interface LeaseInformation {
   classification: string;
   interestRate: number;
   totalPayments: number;
-  purchaseOption: boolean;
-  purchasePrice: number;
   quantityOfPayments: number;
   presentValue: number;
   startDate: string;
@@ -35,8 +33,6 @@ interface AllLeaseInformation {
   interestRate: number;
   totalPayments: number;
   quantityOfPayments: number;
-  purchaseOption: boolean;
-  purchasePrice: number;
   presentValue: number;
   startDate: string;
   endDate: string;
@@ -84,9 +80,8 @@ export class Lease implements LeaseValues {
   deferredRent: number;
   leaseIncentive: number;
   initialDirectCosts: number;
+  useEconomicLife: boolean;
   economicLife: number;
-  purchaseOption: boolean;
-  purchasePrice: number;
 
   constructor() {
     this.name = '';
@@ -110,9 +105,8 @@ export class Lease implements LeaseValues {
     deferredRent?: number,
     leaseIncentive?: number,
     initialDirectCosts?: number,
-    economicLife?: number,
-    purchaseOption?: boolean,
-    purchasePrice?: number
+    useEconomicLife?: boolean,
+    economicLife?: number
   ): void {
     this.name = name;
     this.description = description;
@@ -125,9 +119,8 @@ export class Lease implements LeaseValues {
     this.deferredRent = deferredRent;
     this.leaseIncentive = leaseIncentive;
     this.initialDirectCosts = initialDirectCosts;
+    this.useEconomicLife = useEconomicLife;
     this.economicLife = economicLife;
-    this.purchaseOption = purchaseOption;
-    this.purchasePrice = purchasePrice;
 
     // create and sort the payments array to get the start and end dates of the lease
     const paymentsArray = this.payments
@@ -155,8 +148,6 @@ export class Lease implements LeaseValues {
       this.presentValue,
       this.quantityOfPayments,
       this.prepaid,
-      this.purchaseOption,
-      this.purchasePrice,
       this.classification
     );
 
@@ -171,7 +162,7 @@ export class Lease implements LeaseValues {
         this.startDate,
         liabilityBalance,
         this.paymentStream.length,
-        this.purchaseOption,
+        this.useEconomicLife,
         this.economicLife
       );
     } else if (this.classification === LeaseClassification.OPERATING) {
@@ -291,8 +282,6 @@ export class Lease implements LeaseValues {
       prepaid: this.prepaid,
       description: this.description,
       classification: this.classification,
-      purchaseOption: this.purchaseOption,
-      purchasePrice: this.purchasePrice,
       interestRate: this.interestRate,
       totalPayments: this.totalPayments,
       quantityOfPayments: this.quantityOfPayments,
@@ -311,8 +300,6 @@ export class Lease implements LeaseValues {
       prepaid: this.prepaid,
       description: this.description,
       classification: this.classification,
-      purchaseOption: this.purchaseOption,
-      purchasePrice: this.purchasePrice,
       interestRate: this.interestRate,
       totalPayments: this.totalPayments,
       quantityOfPayments: this.quantityOfPayments,
