@@ -17,8 +17,6 @@ const calculateAssetSchedule = (
     classification
   } = data;
 
-  // const straightLineRent = totalPayments / life;
-
   let result = [];
 
   for (let i = 0; i < life; i++) {
