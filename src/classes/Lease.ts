@@ -19,6 +19,8 @@ interface LeaseInformation {
   classification: string;
   interestRate: number;
   totalPayments: number;
+  purchaseOption: boolean;
+  purchasePrice: number;
   quantityOfPayments: number;
   presentValue: number;
   startDate: string;
@@ -33,6 +35,8 @@ interface AllLeaseInformation {
   interestRate: number;
   totalPayments: number;
   quantityOfPayments: number;
+  purchaseOption: boolean;
+  purchasePrice: number;
   presentValue: number;
   startDate: string;
   endDate: string;
@@ -150,8 +154,13 @@ export class Lease implements LeaseValues {
       this.interestRate,
       this.presentValue,
       this.quantityOfPayments,
-      this.prepaid
+      this.prepaid,
+      this.purchaseOption,
+      this.purchasePrice
     );
+
+    const liabilityBalance = this.liability.getLiabilityData()[0]
+      .beginningBalance;
 
     // create and calculate a new asset based off of classification
     if (this.classification === LeaseClassification.FINANCE) {
@@ -159,7 +168,7 @@ export class Lease implements LeaseValues {
 
       this.asset.setPropertiesFinance(
         this.startDate,
-        this.presentValue,
+        liabilityBalance,
         this.paymentStream.length,
         this.purchaseOption,
         this.economicLife
@@ -169,7 +178,7 @@ export class Lease implements LeaseValues {
 
       this.asset.setPropertiesOperating(
         this.startDate,
-        this.presentValue,
+        liabilityBalance,
         this.deferredRent,
         this.leaseIncentive,
         this.initialDirectCosts,
@@ -281,6 +290,8 @@ export class Lease implements LeaseValues {
       prepaid: this.prepaid,
       description: this.description,
       classification: this.classification,
+      purchaseOption: this.purchaseOption,
+      purchasePrice: this.purchasePrice,
       interestRate: this.interestRate,
       totalPayments: this.totalPayments,
       quantityOfPayments: this.quantityOfPayments,
@@ -299,6 +310,8 @@ export class Lease implements LeaseValues {
       prepaid: this.prepaid,
       description: this.description,
       classification: this.classification,
+      purchaseOption: this.purchaseOption,
+      purchasePrice: this.purchasePrice,
       interestRate: this.interestRate,
       totalPayments: this.totalPayments,
       quantityOfPayments: this.quantityOfPayments,
@@ -373,9 +386,11 @@ export class Lease implements LeaseValues {
     const paymentStream = this.paymentStream.map((month) => {
       return { payment: month.payment, frequency: month.frequency };
     });
+
     const correctedPaymentStream = this.correctPaymentStreamForPVCalc(
       paymentStream
     );
+
     const reducerFunction = this.calcPresentValue(
       this.interestRate,
       this.prepaid
