@@ -375,8 +375,8 @@ export class Lease implements LeaseValues {
   }
 
   private calculatePresentValuePaymentBeginning(
-    paymentStream,
-    interestRate
+    paymentStream: { payment: number; frequency: string }[],
+    interestRate: number
   ): number {
     const correctedPaymentStream = paymentStream.filter(
       (payment) => payment.payment !== 0
@@ -402,8 +402,8 @@ export class Lease implements LeaseValues {
   }
 
   private calculatePresentValuePaymentEnding(
-    paymentStream,
-    interestRate
+    paymentStream: { payment: number; frequency: string }[],
+    interestRate: number
   ): number {
     const correctedPaymentStream = paymentStream.filter(
       (payment) => payment.payment !== 0
