@@ -60,14 +60,6 @@ const calculateLiability = (
         const endingBalance =
           startingBalance + interestExpense - principal - interestPayment;
 
-        console.log(
-          startingBalance,
-          principal,
-          interestPayment,
-          interestExpense,
-          interestPayment,
-          endingBalance
-        );
         const month = new LiabilityMonthly(
           date,
           payment,
@@ -82,20 +74,7 @@ const calculateLiability = (
 
         result.push(month);
       }
-
-      // const month = new LiabilityMonthly(
-      //   date,
-      //   payment,
-      //   startingBalance,
-      //   interestRate,
-      //   0,
-      //   prepaid
-      // );
-
-      // result.push(month);
     } else {
-      // let month: LiabilityMonthly;
-
       const { interestExpense, endingBalance } = result[i - 1].getMonthlyData();
 
       if (prepaid) {
@@ -139,9 +118,9 @@ const calculateLiability = (
         ].getMonthlyData();
 
         const currentMonthInterestExpense =
-          startingBalance * (interestRate / annualPayments);
+          endingBalance * (interestRate / annualPayments);
 
-        const principal = payment - currentMonthInterestExpense;
+        const principal = payment;
 
         const interestPayment = 0;
 
@@ -164,14 +143,6 @@ const calculateLiability = (
         );
 
         result.push(month);
-        // month = new LiabilityMonthly(
-        //   date,
-        //   payment,
-        //   endingBalance,
-        //   interestRate,
-        //   0,
-        //   prepaid
-        // );
       }
 
       // result.push(month);
