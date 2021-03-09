@@ -18,22 +18,22 @@ const calculateLiability = (
     const date = new Date(payments[i].month);
     const { frequency, payment } = payments[i];
 
-    let annualPayments: number;
+    const annlPayments = annualPayments(frequency);
 
-    if (frequency === PaymentFrequency.Monthly) {
-      annualPayments = 12;
-    } else if (frequency === PaymentFrequency.Quarterly) {
-      annualPayments = 4;
-    } else if (frequency === PaymentFrequency.SemiAnnual) {
-      annualPayments = 2;
-    } else if (frequency === PaymentFrequency.Annual) {
-      annualPayments = 1;
-    }
+    // if (frequency === PaymentFrequency.Monthly) {
+    //   annualPayments = 12;
+    // } else if (frequency === PaymentFrequency.Quarterly) {
+    //   annualPayments = 4;
+    // } else if (frequency === PaymentFrequency.SemiAnnual) {
+    //   annualPayments = 2;
+    // } else if (frequency === PaymentFrequency.Annual) {
+    //   annualPayments = 1;
+    // }
 
     if (i === 0) {
       if (prepaid) {
         const interestExpense =
-          (startingBalance - payment) * (interestRate / annualPayments);
+          (startingBalance - payment) * (interestRate / annlPayments);
         const principal = payment;
         const interestPayment = 0;
         const endingBalance =
@@ -53,8 +53,7 @@ const calculateLiability = (
 
         result.push(month);
       } else {
-        const interestExpense =
-          startingBalance * (interestRate / annualPayments);
+        const interestExpense = startingBalance * (interestRate / annlPayments);
         const principal = payment;
         const interestPayment = 0;
         const endingBalance =
@@ -83,7 +82,7 @@ const calculateLiability = (
         ].getMonthlyData();
 
         let currentMonthInterestExpense =
-          (endingBalance - payment) * (interestRate / annualPayments);
+          (endingBalance - payment) * (interestRate / annlPayments);
 
         const principal = payment - interestExpense;
 
@@ -118,7 +117,7 @@ const calculateLiability = (
         ].getMonthlyData();
 
         const currentMonthInterestExpense =
-          endingBalance * (interestRate / annualPayments);
+          endingBalance * (interestRate / annlPayments);
 
         const principal = payment;
 
@@ -152,6 +151,23 @@ const calculateLiability = (
   result = calculateSTLTBalances(result);
 
   return result;
+};
+
+/**
+ * Calculates the number of payments per year based off of payment frequency
+ * @param frequency
+ * @returns
+ */
+const annualPayments = (frequency) => {
+  if (frequency === PaymentFrequency.Monthly) {
+    return 12;
+  } else if (frequency === PaymentFrequency.Quarterly) {
+    return 4;
+  } else if (frequency === PaymentFrequency.SemiAnnual) {
+    return 2;
+  } else if (frequency === PaymentFrequency.Annual) {
+    return 1;
+  }
 };
 
 /**
