@@ -356,63 +356,13 @@ export class Lease implements LeaseValues {
     const paymentStream = this.paymentStream.map((month) => {
       return { payment: month.payment, frequency: month.frequency };
     });
-    const rateOfReturn = this.interestRate / 12;
-
-    let presentValue = 0;
-    if (this.prepaid) {
-      presentValue = this.calculatePresentValuePaymentBeginning(
-        paymentStream,
-        this.interestRate
-      );
-    } else {
-      presentValue = this.calculatePresentValuePaymentEnding(
-        paymentStream,
-        rateOfReturn
-      );
-    }
-
-    return roundNumber(presentValue, 2);
-  }
-
-  private calculatePresentValuePaymentBeginning(
-    paymentStream: { payment: number; frequency: string }[],
-    interestRate: number
-  ): number {
     const correctedPaymentStream = this.correctPaymentStreamForPVCalc(
       paymentStream
     );
-
-    // let result = correctedPaymentStream.reduce(
-    //   (accumulator, currentValue, index) => {
-    //     const { payment, frequency } = currentValue;
-
-    //     if (index === 0) return payment;
-
-    //     const rateOfReturn = this.presentValueInterestRate(
-    //       interestRate,
-    //       frequency
-    //     );
-
-    //     return accumulator + payment / Math.pow(1 + rateOfReturn, index);
-    //   },
-    //   0
-    // );
-
-    // return result;
-
-    const reducerFunction = this.calcPresentValue(interestRate, this.prepaid);
-
-    return correctedPaymentStream.reduce(reducerFunction, 0);
-  }
-
-  private calculatePresentValuePaymentEnding(
-    paymentStream: { payment: number; frequency: string }[],
-    interestRate: number
-  ): number {
-    const correctedPaymentStream = this.correctPaymentStreamForPVCalc(
-      paymentStream
+    const reducerFunction = this.calcPresentValue(
+      this.interestRate,
+      this.prepaid
     );
-    const reducerFunction = this.calcPresentValue(interestRate, this.prepaid);
 
     return correctedPaymentStream.reduce(reducerFunction, 0);
   }
