@@ -382,23 +382,27 @@ export class Lease implements LeaseValues {
       paymentStream
     );
 
-    let result = correctedPaymentStream.reduce(
-      (accumulator, currentValue, index) => {
-        const { payment, frequency } = currentValue;
+    // let result = correctedPaymentStream.reduce(
+    //   (accumulator, currentValue, index) => {
+    //     const { payment, frequency } = currentValue;
 
-        if (index === 0) return payment;
+    //     if (index === 0) return payment;
 
-        const rateOfReturn = this.presentValueInterestRate(
-          interestRate,
-          frequency
-        );
+    //     const rateOfReturn = this.presentValueInterestRate(
+    //       interestRate,
+    //       frequency
+    //     );
 
-        return accumulator + payment / Math.pow(1 + rateOfReturn, index);
-      },
-      0
-    );
+    //     return accumulator + payment / Math.pow(1 + rateOfReturn, index);
+    //   },
+    //   0
+    // );
 
-    return result;
+    // return result;
+
+    const reducerFunction = this.calcPresentValue(interestRate, this.prepaid);
+
+    return correctedPaymentStream.reduce(reducerFunction, 0);
   }
 
   private calculatePresentValuePaymentEnding(
@@ -408,17 +412,8 @@ export class Lease implements LeaseValues {
     const correctedPaymentStream = this.correctPaymentStreamForPVCalc(
       paymentStream
     );
+    const reducerFunction = this.calcPresentValue(interestRate, this.prepaid);
 
-    // return correctedPaymentStream.reduce((accumulator, currentValue, index) => {
-    //   const { payment, frequency } = currentValue;
-    //   const rateOfReturn = this.presentValueInterestRate(
-    //     interestRate,
-    //     frequency
-    //   );
-
-    //   return accumulator + payment / Math.pow(1 + rateOfReturn, index + 1);
-    // }, 0);
-    const reducerFunction = this.calcPVWithEndingPayment(interestRate);
     return correctedPaymentStream.reduce(reducerFunction, 0);
   }
 
@@ -446,7 +441,12 @@ export class Lease implements LeaseValues {
     return paymentStream.filter((payment) => payment.payment !== 0);
   }
 
-  private calcPVWithEndingPayment(interestRate) {
+  /**
+   * Generates the reducer function for PV calculation
+   * @param interestRate
+   * @returns
+   */
+  private calcPresentValue(interestRate: number, prepaid: boolean) {
     return (
       accumulator: number,
       currentValue: { payment: number; frequency: string },
@@ -457,8 +457,13 @@ export class Lease implements LeaseValues {
         interestRate,
         frequency
       );
+      if (prepaid) {
+        if (index === 0) return payment;
 
-      return accumulator + payment / Math.pow(1 + rateOfReturn, index + 1);
+        return accumulator + payment / Math.pow(1 + rateOfReturn, index);
+      } else {
+        return accumulator + payment / Math.pow(1 + rateOfReturn, index + 1);
+      }
     };
   }
 }
