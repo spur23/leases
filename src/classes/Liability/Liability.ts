@@ -3,6 +3,7 @@ import { PaymentStream } from '../../interfaces';
 import { generateLiability } from '../../utils';
 import { LiabilityMonthly } from './LiabilityMonthly';
 import { LiabilityValues } from '../../interfaces/LiabilityValues';
+import { LeaseClassification } from '../../enums/LeaseClassification';
 
 export class Liability implements LiabilityValues {
   startDate: Date;
@@ -25,12 +26,17 @@ export class Liability implements LiabilityValues {
     life: number,
     prepaid: boolean,
     purchaseOption: boolean,
-    purchasePrice: number
+    purchasePrice: number,
+    classification: string
   ) {
-    if (purchaseOption) {
-      this.startingBalance = startingBalance + purchasePrice;
-    } else {
+    if (classification === LeaseClassification.OPERATING) {
       this.startingBalance = startingBalance;
+    } else {
+      if (purchaseOption) {
+        this.startingBalance = startingBalance + purchasePrice;
+      } else {
+        this.startingBalance = startingBalance;
+      }
     }
 
     this.startDate = new Date(startDate);
