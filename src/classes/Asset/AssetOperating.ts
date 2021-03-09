@@ -46,8 +46,6 @@ export class AssetOperating extends AssetBase {
         (totalPayments - leaseIncentive - deferredRent + initialDirectCosts) /
         life;
 
-      console.log(this.straightLineRent);
-
       const assetData = {
         startDate,
         life,
