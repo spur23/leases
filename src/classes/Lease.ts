@@ -79,6 +79,9 @@ export class Lease implements LeaseValues {
   endDate: string;
   deferredRent: number;
   leaseIncentive: number;
+  initialDirectCosts: number;
+  economicLife: number;
+  purchaseOption: boolean;
 
   constructor() {
     this.name = '';
@@ -101,7 +104,9 @@ export class Lease implements LeaseValues {
     prepaid: boolean,
     deferredRent?: number,
     leaseIncentive?: number,
-    initialDirectCosts?: number
+    initialDirectCosts?: number,
+    economicLife?: number,
+    purchaseOption?: boolean
   ): void {
     this.name = name;
     this.description = description;
