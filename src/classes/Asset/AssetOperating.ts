@@ -23,11 +23,10 @@ export class AssetOperating extends AssetBase {
   }
 
   calculateMonthlySchedule(liabilitySchedule: LiabilitySchedule[]) {
-    // const totalPayments = liabilitySchedule.reduce(
-    //   (accumulator, currentValue) => accumulator + currentValue.payment,
-    //   0
-    // );
-    const totalPayments = this.startingBalance;
+    const totalPayments = liabilitySchedule.reduce(
+      (accumulator, currentValue) => accumulator + currentValue.payment,
+      0
+    );
 
     return (startDate, life, startingBalance) => {
       this.straightLineRent = totalPayments / life;
