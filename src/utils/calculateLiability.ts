@@ -56,12 +56,24 @@ const calculateLiability = (
     }
   }
 
+  result = calculateSTLTBalances(result);
+
+  return result;
+};
+
+/**
+ * Calculates the ST and LT balances for the liability schedule
+ * @param liabilitySchedule
+ * @returns
+ */
+const calculateSTLTBalances = (liabilitySchedule) => {
+  let result = [...liabilitySchedule];
+  let stBalance = 0;
+  let ltBalance = 0;
+
   result.sort(
     (a, b) => new Date(a.date).valueOf() - new Date(b.date).valueOf()
   );
-
-  let stBalance = 0;
-  let ltBalance = 0;
 
   for (let i = 0; i < result.length; i++) {
     if (i < result.length - 12) {
