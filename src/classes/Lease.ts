@@ -403,13 +403,21 @@ export class Lease implements LeaseValues {
 
   private calculatePresentValuePaymentEnding(
     paymentStream,
-    rateOfReturn
+    interestRate
   ): number {
-    return paymentStream.reduce(
-      (accumulator, currentValue, index) =>
-        accumulator + currentValue / Math.pow(rateOfReturn + 1, index + 1),
-      0
+    const correctedPaymentStream = paymentStream.filter(
+      (payment) => payment.payment !== 0
     );
+
+    return correctedPaymentStream.reduce((accumulator, currentValue, index) => {
+      const { payment, frequency } = currentValue;
+      const rateOfReturn = this.presentValueInterestRate(
+        interestRate,
+        frequency
+      );
+
+      return accumulator + payment / Math.pow(1 + rateOfReturn, index + 1);
+    }, 0);
   }
 
   private presentValueInterestRate(interestRate, frequency) {
