@@ -35,32 +35,28 @@ export class Liability implements LiabilityValues {
   }
 
   setPropertiesJSON(data, paymentStream, interestRate, life, prepaid) {
-    const { date, beginningBalance, payment } = data[0];
-
-    this.startingBalance = beginningBalance;
-    this.startDate = new Date(date);
-    this.paymentStream = paymentStream;
-    this.payment = payment;
-    this.interestRate = interestRate;
-    this.life = life;
-    this.prepaid = prepaid;
-
-    const liabilityMonthly = data.map((month) => {
-      const monthLblity = new LiabilityMonthly(
-        new Date(month.date),
-        month.payment,
-        month.beginningBalance,
-        this.interestRate,
-        month.interestPayment,
-        this.prepaid
-      );
-      monthLblity.shortTermBalance = month.shortTermBalance;
-      monthLblity.longTermBalance = month.longTermBalance;
-
-      return monthLblity;
-    });
-
-    this.monthlyTransactions = liabilityMonthly;
+    // const { date, beginningBalance, payment } = data[0];
+    // this.startingBalance = beginningBalance;
+    // this.startDate = new Date(date);
+    // this.paymentStream = paymentStream;
+    // this.payment = payment;
+    // this.interestRate = interestRate;
+    // this.life = life;
+    // this.prepaid = prepaid;
+    // const liabilityMonthly = data.map((month) => {
+    //   const monthLblity = new LiabilityMonthly(
+    //     new Date(month.date),
+    //     month.payment,
+    //     month.beginningBalance,
+    //     this.interestRate,
+    //     month.interestPayment,
+    //     this.prepaid
+    //   );
+    //   monthLblity.shortTermBalance = month.shortTermBalance;
+    //   monthLblity.longTermBalance = month.longTermBalance;
+    //   return monthLblity;
+    // });
+    // this.monthlyTransactions = liabilityMonthly;
   }
 
   calculateMonthlySchedule(): LiabilityMonthly[] {
