@@ -1,6 +1,5 @@
 import { roundNumber } from '.';
 import { LiabilityMonthly } from '../classes/Liability/LiabilityMonthly';
-import { PaymentFrequency } from '../enums';
 import { PaymentStream } from '../interfaces';
 /**
  *Calculates liability monthly schedule.
@@ -13,10 +12,10 @@ const generateLiability = (
 ) => {
   let result = [];
   const payments = [...paymentStream];
-  console.log('payments', payments);
+
   for (let i = 0; i < payments.length; i++) {
     const date = new Date(payments[i].month);
-    const { frequency, payment } = payments[i];
+    const { payment } = payments[i];
 
     // const annlPayments = annualPayments(frequency);
     const correctedInterestRate = interestRate / 12;
@@ -172,23 +171,6 @@ const endBalance = (
   principal: number,
   interestPayment: number
 ): number => beginningBalance + interestExpense - principal - interestPayment;
-
-/**
- * Calculates the number of payments per year based off of payment frequency
- * @param frequency
- * @returns
- */
-const annualPayments = (frequency) => {
-  if (frequency === PaymentFrequency.Monthly) {
-    return 12;
-  } else if (frequency === PaymentFrequency.Quarterly) {
-    return 4;
-  } else if (frequency === PaymentFrequency.SemiAnnual) {
-    return 2;
-  } else if (frequency === PaymentFrequency.Annual) {
-    return 1;
-  }
-};
 
 /**
  * Calculates the ST and LT balances for the liability schedule
