@@ -3,6 +3,7 @@ export interface LiabilitySchedulePrint {
   beginningBalance: number;
   payment: number;
   interestExpense: number;
+  interestPayment: number;
   principal: number;
   endingBalance: number;
   shortTermBalance: number;
