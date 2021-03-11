@@ -13,12 +13,11 @@ const calculateAssetSchedule = (
     startingBalance,
     monthlyDepreciation,
     liabilitySchedule,
-    totalPayments,
     classification
   } = data;
 
   let result = [];
-  console.log(life);
+
   for (let i = 0; i < life; i++) {
     let depreciation = monthlyDepreciation;
 
